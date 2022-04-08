@@ -38,7 +38,6 @@ export default function Noticia() {
       })
       .catch((error) => {
         //alert(error+"");
-        setData([]);
         enqueueSnackbar(error + "", { variant: "error" });
       });
   }, [setData, enqueueSnackbar]);
