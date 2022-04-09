@@ -201,7 +201,6 @@ export default function Nota(props) {
     await axios
       .get(
         baseUrl + "/habilitados/" + props.idNivel + "/" + props.idEtapa,
-
         {
           headers: {
             "Content-Type": "application/json",
@@ -216,10 +215,10 @@ export default function Nota(props) {
         setResultado2(response?.data);
       })
       .catch((error) => {
-        //alert(error+"");
+        alert(error);
         console.log("Error");
         //setEtapas([]);
-        //enqueueSnackbar(error + "", { variant: "error" });
+        enqueueSnackbar(error + "", { variant: "error" });
       });
   }, [props]);
 
