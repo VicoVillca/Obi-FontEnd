@@ -113,9 +113,7 @@ export default function Nivel() {
                       {step.titulo}
                     </Typography>
                     <Typography variant="body2" color="text.secondary">
-                      {step.subTitulo.length < 100
-                        ? step.subTitulo
-                        : step.subTitulo.substring(0, 100) + "..."}
+                      {step.subTitulo}
                     </Typography>
                     <Link
                       underline="hover"

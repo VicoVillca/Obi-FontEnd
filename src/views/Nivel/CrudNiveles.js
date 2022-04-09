@@ -268,7 +268,7 @@ export default function Olimpiada() {
                 </TableCell>
                 <TableCell align="left">{row.nombre}</TableCell>
                 <TableCell align="left">
-                  {row.descripcion.length < 50
+                  {row.descripcion.length < 200
                     ? row.descripcion
                     : row.descripcion.substring(0, 10) + "..."}
                 </TableCell>
