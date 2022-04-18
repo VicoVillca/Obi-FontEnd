@@ -2,13 +2,15 @@ import React, { useEffect, useState, useCallback } from "react";
 
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
+import TableCell, { tableCellClasses } from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import Grid from "@mui/material/Grid";
+import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
+import { styled } from "@mui/material/styles";
 /// elements for select
 import Box from "@mui/material/Box";
 import InputLabel from "@mui/material/InputLabel";
@@ -30,6 +32,16 @@ const cookies = new Cookies();
 const baseUrl = HOST.URL_BACK_END + "equipo";
 
 const colores = ["#ffea00", "#c5cae9", "#b25431"];
+
+const StyledTableCell = styled(TableCell)(({ theme }) => ({
+  [`&.${tableCellClasses.head}`]: {
+    backgroundColor: theme.palette.primary.main,
+    color: theme.palette.common.white,
+  },
+  [`&.${tableCellClasses.body}`]: {
+    fontSize: 14,
+  },
+}));
 export default function Nota(props) {
   const [ciudad, setCiudad] = useState("Todos");
   const [resultado2, setResultado2] = useState([]);
@@ -39,16 +51,16 @@ export default function Nota(props) {
     if (event.target.value === "Todos") setResultado2(resultado);
     else {
       var city = event.target.value;
-      var val = resultado.filter((r) => r.departamento.includes(city));
+
+      var val = resultado.filter((r) =>
+        r.equipo.colegio.distrito.departamento.includes(city)
+      );
 
       setResultado2(val);
     }
   };
 
   const getNotas = useCallback(async () => {
-    console.log(
-      baseUrl + "/habilitados/" + props.idNivel + "/" + props.idEtapa
-    );
     await axios
       .get(
         baseUrl + "/habilitados/" + props.idNivel + "/" + props.idEtapa,
@@ -62,13 +74,11 @@ export default function Nota(props) {
         JSON.stringify({})
       )
       .then((response) => {
-        console.log(response?.data);
         setResultado(response?.data);
         setResultado2(response?.data);
       })
       .catch((error) => {
         //alert(error+"");
-        console.log("Error");
         //setEtapas([]);
         //enqueueSnackbar(error + "", { variant: "error" });
       });
@@ -76,7 +86,6 @@ export default function Nota(props) {
 
   useEffect(() => {
     /// state
-    console.log(props);
     getNotas();
   }, [props, getNotas]);
   return (
@@ -87,10 +96,11 @@ export default function Nota(props) {
             Notas de Area
           </Typography>
         </Grid>
+
         <Grid item>
-          <Typography gutterBottom variant="h6" component="div">
-            <Box sx={{ minWidth: 320 }}>
-              <FormControl fullWidth>
+          <Stack direction="row" spacing={1}>
+            <Box sx={{ minWidth: 120 }}>
+              <FormControl fullWidth size="small">
                 <InputLabel id="demo-simple-select-label">
                   Departamento
                 </InputLabel>
@@ -104,14 +114,14 @@ export default function Nota(props) {
                 >
                   <MenuItem value={"Todos"}>Todos</MenuItem>
                   {departamentos.map((row, index) => (
-                    <MenuItem key={index} value={row.nombre}>
+                    <MenuItem key={index} value={row.abr}>
                       {row.nombre}
                     </MenuItem>
                   ))}
                 </Select>
               </FormControl>
             </Box>
-          </Typography>
+          </Stack>
         </Grid>
       </Grid>
 
@@ -119,15 +129,15 @@ export default function Nota(props) {
         <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
           <TableHead>
             <TableRow>
-              <TableCell style={{ width: 10 }}>Nro</TableCell>
-              <TableCell align="center" style={{ width: 10 }}>
+              <StyledTableCell style={{ width: 10 }}>Nro</StyledTableCell>
+              <StyledTableCell align="center" style={{ width: 10 }}>
                 Puntos
-              </TableCell>
-              <TableCell align="center">Equipo</TableCell>
-              <TableCell align="center">Estado</TableCell>
-              <TableCell align="center">Distrito</TableCell>
-              <TableCell align="center">Departamento</TableCell>
-              <TableCell align="center">U.Educativa</TableCell>
+              </StyledTableCell>
+              <StyledTableCell align="center">Equipo</StyledTableCell>
+              <StyledTableCell align="center">Estado</StyledTableCell>
+              <StyledTableCell align="center">Distrito</StyledTableCell>
+              <StyledTableCell align="center">Departamento</StyledTableCell>
+              <StyledTableCell align="center">U.Educativa</StyledTableCell>
             </TableRow>
           </TableHead>
           <TableBody>

@@ -20,7 +20,6 @@ import Tab from "@mui/material/Tab";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import PrecisionManufacturingIcon from "@mui/icons-material/PrecisionManufacturing";
 import ExtensionIcon from "@mui/icons-material/Extension";
-import QueryStatsIcon from "@mui/icons-material/QueryStats";
 import SchoolIcon from "@mui/icons-material/School";
 import SupervisedUserCircleIcon from "@mui/icons-material/SupervisedUserCircle";
 //Lista de componentes
@@ -30,7 +29,6 @@ import Distrito from "views/Distrito/CrudDistrito";
 import Colegio from "views/Colegio/CrudColegio";
 import Estudiantes from "views/Estudiante/Estudiantes";
 import Usuario from "views/Usuario/CrudUsuario";
-import Historial from "views/Historial/Historial";
 import UserProfile from "views/Usuario/PerfilUsuario";
 import styles from "assets/jss/material-dashboard-react/components/headerLinksStyle.js";
 
@@ -170,15 +168,6 @@ export default function ProminentAppBar() {
               }
               value={"7"}
             />
-            <Tab
-              label={
-                <>
-                  <QueryStatsIcon />
-                  Historial
-                </>
-              }
-              value={"8"}
-            />
           </Tabs>
         </Box>
         <Box minHeight="70vh" sx={{ paddingRight: 5, paddingLeft: 5 }}>
@@ -202,9 +191,6 @@ export default function ProminentAppBar() {
           </TabPanel>
           <TabPanel value={"7"}>
             <Usuario />
-          </TabPanel>
-          <TabPanel value={"8"}>
-            <Historial />
           </TabPanel>
         </Box>
         <Footer />

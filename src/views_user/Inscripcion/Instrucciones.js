@@ -39,11 +39,6 @@ const steps = [
     label: "Agregar estudiantes a los equipos creados",
     description: `Agregamos nuestros estudiantes a los equipos creados.`,
   },
-  {
-    id: 3,
-    label: "Reporte General",
-    description: `Mostramos la lista de grupos y estudiantes registrados.`,
-  },
 ];
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
@@ -136,7 +131,7 @@ export default function Inscripcion() {
                     <Step key={step.id}>
                       <StepLabel
                         optional={
-                          index === 2 ? (
+                          index === 1 ? (
                             <Typography variant="caption">
                               Ultimo paso
                             </Typography>

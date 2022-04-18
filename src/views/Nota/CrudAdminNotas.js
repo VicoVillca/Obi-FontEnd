@@ -86,12 +86,41 @@ export default function Notas() {
       });
   }, [setNiveles, enqueueSnackbar]);
 
+  const buscarNombreNivel = (id) => {
+    let nombre = "Indefinido";
+    for (let i = 0; i < niveles.length; i++) {
+      const element = niveles[i];
+      if (element.idNivel === id) {
+        nombre = element.nombre;
+        break;
+      }
+    }
+    return nombre;
+  };
+  const buscarNombreEtapa = (id) => {
+    let nombre = "Indefinido";
+    for (let i = 0; i < etapas.length; i++) {
+      const element = etapas[i];
+      if (element.idEtapa === id) {
+        nombre = element.nombre;
+        break;
+      }
+    }
+    return nombre;
+  };
   useEffect(() => {
     getEtapas();
     getNiveles();
   }, [getEtapas, getNiveles]);
   return (
-    <Box sx={{ width: "100%", height: "100%", typography: "body1" }}>
+    <Box
+      sx={{
+        width: "100%",
+        height: "100%",
+        typography: "body1",
+        border: "1px dashed grey",
+      }}
+    >
       <TabContext value={value}>
         <Box
           display="flex"
@@ -156,9 +185,14 @@ export default function Notas() {
           <Grid item xs={10}>
             <Box sx={{ flexGrow: 1, p: 2 }}>
               {nivel === "" || etapa === "" ? (
-                "oh Nouu"
+                "oh Cargandoo....."
               ) : (
-                <UpdateNotaAdmin idNivel={nivel} idEtapa={etapa} />
+                <UpdateNotaAdmin
+                  idNivel={nivel}
+                  idEtapa={etapa}
+                  nombreNivel={buscarNombreNivel(nivel)}
+                  nombreEtapa={buscarNombreEtapa(etapa)}
+                />
               )}
             </Box>
           </Grid>

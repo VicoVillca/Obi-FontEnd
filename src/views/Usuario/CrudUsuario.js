@@ -2,7 +2,7 @@ import React, { useEffect, useState, useCallback } from "react";
 
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
+import TableCell, { tableCellClasses } from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
@@ -93,7 +93,15 @@ BootstrapDialogTitle.propTypes = {
   onClose: PropTypes.func.isRequired,
 };
 //initialñ state
-
+const StyledTableCell = styled(TableCell)(({ theme }) => ({
+  [`&.${tableCellClasses.head}`]: {
+    backgroundColor: theme.palette.primary.main,
+    color: theme.palette.common.white,
+  },
+  [`&.${tableCellClasses.body}`]: {
+    fontSize: 14,
+  },
+}));
 export default function Olimpiada() {
   const { enqueueSnackbar } = useSnackbar();
   const [ciudad, setCiudad] = useState("Todos");
@@ -368,14 +376,14 @@ export default function Olimpiada() {
         <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
           <TableHead>
             <TableRow>
-              <TableCell align="center">ID</TableCell>
-              <TableCell align="left">UserName</TableCell>
-              <TableCell align="left">Correo</TableCell>
-              <TableCell align="center">Acceso</TableCell>
-              <TableCell align="center">Rol</TableCell>
-              <TableCell align="center" style={{ width: 200 }}>
+              <StyledTableCell align="center">ID</StyledTableCell>
+              <StyledTableCell align="left">UserName</StyledTableCell>
+              <StyledTableCell align="left">Correo</StyledTableCell>
+              <StyledTableCell align="center">Acceso</StyledTableCell>
+              <StyledTableCell align="center">Rol</StyledTableCell>
+              <StyledTableCell align="center" style={{ width: 200 }}>
                 Acciones
-              </TableCell>
+              </StyledTableCell>
             </TableRow>
           </TableHead>
           <TableBody>

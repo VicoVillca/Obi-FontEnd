@@ -2,7 +2,7 @@ import React, { useEffect, useState, useCallback } from "react";
 import { Link } from "react-router-dom";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
+import TableCell, { tableCellClasses } from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
@@ -50,7 +50,15 @@ const baseUrlNoticia = HOST.URL_BACK_END + "noticia";
 const header = HOST.headerPublic();
 //galletitas
 //Modal elements
-
+const StyledTableCell = styled(TableCell)(({ theme }) => ({
+  [`&.${tableCellClasses.head}`]: {
+    backgroundColor: theme.palette.primary.main,
+    color: theme.palette.common.white,
+  },
+  [`&.${tableCellClasses.body}`]: {
+    fontSize: 14,
+  },
+}));
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   "& .MuiDialogContent-root": {
     padding: theme.spacing(2),
@@ -239,13 +247,13 @@ export default function Olimpiada() {
         <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
           <TableHead>
             <TableRow>
-              <TableCell align="left">idNoticia</TableCell>
-              <TableCell align="left">Titulo</TableCell>
-              <TableCell align="left">SubTitulo</TableCell>
-              <TableCell align="center">fecha</TableCell>
-              <TableCell align="center" style={{ width: 200 }}>
+              <StyledTableCell align="left">idNoticia</StyledTableCell>
+              <StyledTableCell align="left">Titulo</StyledTableCell>
+              <StyledTableCell align="left">SubTitulo</StyledTableCell>
+              <StyledTableCell align="center">fecha</StyledTableCell>
+              <StyledTableCell align="center" style={{ width: 200 }}>
                 Acciones
-              </TableCell>
+              </StyledTableCell>
             </TableRow>
           </TableHead>
           <TableBody>

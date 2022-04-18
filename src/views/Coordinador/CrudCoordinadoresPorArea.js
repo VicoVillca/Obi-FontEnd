@@ -2,7 +2,7 @@ import React, { useEffect, useState, useCallback } from "react";
 
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
+import TableCell, { tableCellClasses } from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
@@ -48,6 +48,15 @@ const baseUrlUsuarios = HOST.URL_BACK_END + "user";
 const header = HOST.headerPublic();
 //galletitas
 //Modal elements
+const StyledTableCell = styled(TableCell)(({ theme }) => ({
+  [`&.${tableCellClasses.head}`]: {
+    backgroundColor: theme.palette.primary.main,
+    color: theme.palette.common.white,
+  },
+  [`&.${tableCellClasses.body}`]: {
+    fontSize: 14,
+  },
+}));
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   "& .MuiDialogContent-root": {
     padding: theme.spacing(2),
@@ -339,12 +348,12 @@ export default function Olimpiada(props) {
         <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
           <TableHead>
             <TableRow>
-              <TableCell align="center">idCoordinador</TableCell>
-              <TableCell align="center">Usuario</TableCell>
-              <TableCell align="left">Area</TableCell>
-              <TableCell align="center" style={{ width: 200 }}>
+              <StyledTableCell align="center">idCoordinador</StyledTableCell>
+              <StyledTableCell align="center">Usuario</StyledTableCell>
+              <StyledTableCell align="left">Area</StyledTableCell>
+              <StyledTableCell align="center" style={{ width: 200 }}>
                 Acciones
-              </TableCell>
+              </StyledTableCell>
             </TableRow>
           </TableHead>
           <TableBody>

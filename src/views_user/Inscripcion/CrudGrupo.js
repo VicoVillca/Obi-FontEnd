@@ -18,10 +18,9 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import Paper from "@mui/material/Paper";
 import Select from "@mui/material/Select";
-import { styled } from "@mui/material/styles";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
+import TableCell, { tableCellClasses } from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
@@ -37,6 +36,7 @@ import GridItem from "components/Grid/GridItem.js";
 //notifications
 import { useSnackbar } from "notistack";
 ///ELEMENTS FOR DIALOG
+import { styled } from "@mui/material/styles";
 import PropTypes from "prop-types";
 
 import Cookies from "universal-cookie";
@@ -85,7 +85,15 @@ BootstrapDialogTitle.propTypes = {
   children: PropTypes.node,
   onClose: PropTypes.func.isRequired,
 };
-
+const StyledTableCell = styled(TableCell)(({ theme }) => ({
+  [`&.${tableCellClasses.head}`]: {
+    backgroundColor: theme.palette.primary.main,
+    color: theme.palette.common.white,
+  },
+  [`&.${tableCellClasses.body}`]: {
+    fontSize: 14,
+  },
+}));
 export default function Paso2() {
   const { enqueueSnackbar } = useSnackbar();
   const [openModalInsert, setOpenInsert] = useState(false);
@@ -341,11 +349,11 @@ export default function Paso2() {
             >
               <TableHead>
                 <TableRow>
-                  <TableCell align="center">idGrupo</TableCell>
-                  <TableCell align="center">NOMBRE</TableCell>
-                  <TableCell align="center">COLEGIO</TableCell>
-                  <TableCell align="center">NIVEL</TableCell>
-                  <TableCell align="center">ACCIONES</TableCell>
+                  <StyledTableCell align="center">idEquipo</StyledTableCell>
+                  <StyledTableCell align="center">NOMBRE</StyledTableCell>
+                  <StyledTableCell align="center">COLEGIO</StyledTableCell>
+                  <StyledTableCell align="center">NIVEL</StyledTableCell>
+                  <StyledTableCell align="center">ACCIONES</StyledTableCell>
                 </TableRow>
               </TableHead>
               <TableBody>

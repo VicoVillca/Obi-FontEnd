@@ -8,6 +8,7 @@ import Button from "@mui/material/Button";
 import Card from "components/Card/Card.js";
 import CardHeader from "components/Card/CardHeader.js";
 import CardBody from "components/Card/CardBody.js";
+import SaveIcon from "@mui/icons-material/Save";
 
 /// elements for select
 import InputLabel from "@mui/material/InputLabel";
@@ -354,8 +355,13 @@ export default withRouter(function UserProfile(props) {
                   </GridItem>
                 </GridContainer>
                 <DialogActions>
-                  <Button variant="contained" color="success" type="submit">
-                    Actualizar Info
+                  <Button
+                    variant="contained"
+                    color="success"
+                    type="submit"
+                    startIcon={<SaveIcon />}
+                  >
+                    Guardar
                   </Button>
                 </DialogActions>
               </form>

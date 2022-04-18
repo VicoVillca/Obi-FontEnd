@@ -15,7 +15,7 @@ import FingerprintIcon from "@mui/icons-material/Fingerprint";
 import TextField from "@mui/material/TextField";
 // components dialog
 import DialogActions from "@mui/material/DialogActions";
-
+import SaveIcon from "@mui/icons-material/Save";
 import { useSnackbar } from "notistack";
 //cookie
 import Cookies from "universal-cookie";
@@ -259,7 +259,12 @@ export default function UserProfile() {
                   </GridItem>
                 </GridContainer>
                 <DialogActions>
-                  <Button variant="contained" color="success" type="submit">
+                  <Button
+                    variant="contained"
+                    color="success"
+                    type="submit"
+                    startIcon={<SaveIcon />}
+                  >
                     Actualizar Perfil
                   </Button>
                 </DialogActions>

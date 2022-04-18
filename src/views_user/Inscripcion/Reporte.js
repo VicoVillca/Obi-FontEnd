@@ -6,21 +6,30 @@ import Alert from "@mui/material/Alert";
 import IconButton from "@mui/material/IconButton";
 import AlertTitle from "@mui/material/AlertTitle";
 import Grid from "@mui/material/Grid";
+
+import GridContainer from "components/Grid/GridContainer.js";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
+import TableCell, { tableCellClasses } from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
-import Button from "@mui/material/Button";
-import DownloadIcon from "@mui/icons-material/Download";
 import FormatListNumberedIcon from "@mui/icons-material/FormatListNumbered";
 import InsightsIcon from "@mui/icons-material/Insights";
-
+import { styled } from "@mui/material/styles";
 import axios from "axios";
 import { useSnackbar } from "notistack";
+///ELEMENTS FOR DIALOG
+
+import PropTypes from "prop-types";
+import Dialog from "@mui/material/Dialog";
+import DialogTitle from "@mui/material/DialogTitle";
+import DialogContent from "@mui/material/DialogContent";
+import DialogActions from "@mui/material/DialogActions";
+import CloseIcon from "@mui/icons-material/Close";
+import Button from "@mui/material/Button";
 
 import Cookies from "universal-cookie";
 import HOST from "variables/general.js";
@@ -28,10 +37,66 @@ import HOST from "variables/general.js";
 const cookies = new Cookies();
 const baseUrl = HOST.URL_BACK_END + "equipo";
 
+const BootstrapDialog = styled(Dialog)(({ theme }) => ({
+  "& .MuiDialogContent-root": {
+    padding: theme.spacing(2),
+  },
+  "& .MuiDialogActions-root": {
+    padding: theme.spacing(1),
+  },
+}));
+
+const BootstrapDialogTitle = (props) => {
+  const { children, onClose, ...other } = props;
+
+  return (
+    <DialogTitle sx={{ m: 0, p: 2 }} {...other}>
+      {children}
+      {onClose ? (
+        <IconButton
+          aria-label="close"
+          onClick={onClose}
+          sx={{
+            position: "absolute",
+            right: 8,
+            top: 8,
+            color: (theme) => theme.palette.grey[500],
+          }}
+        >
+          <CloseIcon />
+        </IconButton>
+      ) : null}
+    </DialogTitle>
+  );
+};
+
+BootstrapDialogTitle.propTypes = {
+  children: PropTypes.node,
+  onClose: PropTypes.func.isRequired,
+};
+
+const StyledTableCell = styled(TableCell)(({ theme }) => ({
+  [`&.${tableCellClasses.head}`]: {
+    backgroundColor: theme.palette.primary.main,
+    color: theme.palette.common.white,
+  },
+  [`&.${tableCellClasses.body}`]: {
+    fontSize: 14,
+  },
+}));
+
 export default function Reportes() {
   const { enqueueSnackbar } = useSnackbar();
   const [equipos, setEquipos] = useState([]);
-
+  const [estudiantes, setEstudiantes] = useState([]);
+  const [openModalUpdate, setOpenUpdate] = useState(false);
+  const seleccionarConsola = (consola) => {
+    setEstudiantes(consola.estudiantes);
+    handleModalUpdate();
+  };
+  const handleModalUpdate = () => {
+    setOpenUpdate(!openModalUpdate);
+  };
   const getAllEquipos = useCallback(async () => {
     await axios
       .get(
@@ -47,6 +112,7 @@ export default function Reportes() {
         })
       )
       .then((response) => {
+        console.log("datos weee");
         console.log(response?.data);
         setEquipos(response?.data);
       })
@@ -68,18 +134,6 @@ export default function Reportes() {
                 Reporte de equipos
               </Typography>
             </Grid>
-            <Grid item>
-              <Typography gutterBottom variant="h6" component="div">
-                <Button
-                  variant="contained"
-                  color="primary"
-                  startIcon={<DownloadIcon />}
-                >
-                  {" "}
-                  Descargar Lista
-                </Button>
-              </Typography>
-            </Grid>
           </Grid>
         </CardHeader>
 
@@ -98,13 +152,15 @@ export default function Reportes() {
               >
                 <TableHead>
                   <TableRow>
-                    <TableCell align="center">IDEQUIPO</TableCell>
-                    <TableCell align="center">NOMBRE</TableCell>
-                    <TableCell align="center">COLEGIO</TableCell>
-                    <TableCell align="center">DISTRITO</TableCell>
-                    <TableCell align="center">DEPARTAMENTO</TableCell>
-                    <TableCell align="center">NIVEL</TableCell>
-                    <TableCell align="center">ACCIONES</TableCell>
+                    <StyledTableCell align="center">IDEQUIPO</StyledTableCell>
+                    <StyledTableCell align="center">NOMBRE</StyledTableCell>
+                    <StyledTableCell align="center">COLEGIO</StyledTableCell>
+                    <StyledTableCell align="center">DISTRITO</StyledTableCell>
+                    <StyledTableCell align="center">
+                      DEPARTAMENTO
+                    </StyledTableCell>
+                    <StyledTableCell align="center">NIVEL</StyledTableCell>
+                    <StyledTableCell align="center">ACCIONES</StyledTableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -128,6 +184,9 @@ export default function Reportes() {
                           color="primary"
                           aria-label="upload picture"
                           component="span"
+                          onClick={() => {
+                            seleccionarConsola(row);
+                          }}
                         >
                           <FormatListNumberedIcon />
                         </IconButton>
@@ -148,6 +207,61 @@ export default function Reportes() {
           )}
         </CardBody>
       </Card>
+
+      {/*MODAL UPDATE NEW ELEMENT*/}
+      <BootstrapDialog
+        onClose={handleModalUpdate}
+        aria-labelledby="customized-dialog-title"
+        open={openModalUpdate}
+        maxWidth="10%"
+      >
+        <BootstrapDialogTitle
+          id="customized-dialog-title"
+          onClose={handleModalUpdate}
+        >
+          Lista de Integrantes
+        </BootstrapDialogTitle>
+        <DialogContent dividers>
+          <GridContainer>
+            <Table
+              sx={{
+                minWidth: 650,
+                mr: 2,
+                ml: 2,
+                border: 1,
+                borderColor: "primary.main",
+              }}
+              aria-label="simple table"
+            >
+              <TableHead>
+                <TableRow>
+                  <StyledTableCell align="center">RUDE</StyledTableCell>
+                  <StyledTableCell align="center">CI</StyledTableCell>
+                  <StyledTableCell align="center">NOMBRE</StyledTableCell>
+                  <StyledTableCell align="center">APPATERNO</StyledTableCell>
+                  <StyledTableCell align="center">APMATERNO</StyledTableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {estudiantes.map((row) => (
+                  <TableRow
+                    key={row.rude}
+                    sx={{
+                      "&:last-child td, &:last-child th": { border: 0 },
+                    }}
+                  >
+                    <TableCell align="center">{row.rude}</TableCell>
+                    <TableCell align="center">{row.ci}</TableCell>
+                    <TableCell align="center">{row.nombre}</TableCell>
+                    <TableCell align="center">{row.apPaterno}</TableCell>
+                    <TableCell align="center">{row.apMaterno}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </GridContainer>
+        </DialogContent>
+      </BootstrapDialog>
     </div>
   );
 }

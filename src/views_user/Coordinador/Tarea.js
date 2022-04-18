@@ -1,19 +1,21 @@
 import React, { useEffect, useState, useCallback } from "react";
-import Breadcrumbs from "@mui/material/Breadcrumbs";
-import { Link } from "react-router-dom";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
+import TableCell, { tableCellClasses } from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
+import Stack from "@mui/material/Stack";
 //FORMULARIOS
 import TextField from "@mui/material/TextField";
 import GridItem from "components/Grid/GridItem.js";
 import GridContainer from "components/Grid/GridContainer.js";
+// descargar y cargar
+import DescargarNotas from "views/Nota/DescargarNotas";
+import SubirNotas from "views/Nota/SubirNotas";
 ///ELEMENTS FOR DIALOG
 
 import PropTypes from "prop-types";
@@ -33,7 +35,6 @@ import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 //icons
 import EditIcon from "@mui/icons-material/Edit";
-import FileDownload from "@mui/icons-material/FileDownload";
 import EmojiEventsTwoToneIcon from "@mui/icons-material/EmojiEventsTwoTone";
 //importamos departamentos
 import { departamentos } from "variables/general.js";
@@ -44,7 +45,6 @@ import { useSnackbar } from "notistack";
 import axios from "axios";
 import HOST from "variables/general.js";
 import Cookies from "universal-cookie";
-import { useParams } from "react-router-dom";
 const cookies = new Cookies();
 
 const baseUrl = HOST.URL_BACK_END + "equipo";
@@ -89,8 +89,18 @@ BootstrapDialogTitle.propTypes = {
   children: PropTypes.node,
   onClose: PropTypes.func.isRequired,
 };
-export default function Nota() {
-  let { idCoordinador } = useParams();
+
+const StyledTableCell = styled(TableCell)(({ theme }) => ({
+  [`&.${tableCellClasses.head}`]: {
+    backgroundColor: theme.palette.primary.main,
+    color: theme.palette.common.white,
+  },
+  [`&.${tableCellClasses.body}`]: {
+    fontSize: 14,
+  },
+}));
+
+export default function Nota(props) {
   const [ciudad, setCiudad] = useState("Todos");
   const { enqueueSnackbar } = useSnackbar();
   const [resultado2, setResultado2] = useState([]);
@@ -175,10 +185,9 @@ export default function Nota() {
   };
 
   const getAllGruposDeCoordinador = useCallback(async () => {
-    console.log(baseUrl + "/coordinador/" + idCoordinador);
     await axios
       .get(
-        baseUrl + "/coordinador/" + idCoordinador,
+        baseUrl + "/coordinador/" + props.idCoordinador,
         {
           headers: {
             "Content-Type": "application/json",
@@ -188,7 +197,6 @@ export default function Nota() {
         JSON.stringify({})
       )
       .then((response) => {
-        console.log(response?.data);
         setResultado(response?.data);
         setResultado2(response?.data);
         //setTarea(response?.data);
@@ -196,15 +204,12 @@ export default function Nota() {
       .catch((error) => {
         enqueueSnackbar(error + "", { variant: "error" });
       });
-  }, [setResultado, setResultado2, idCoordinador, enqueueSnackbar]);
+  }, [setResultado, setResultado2, props, enqueueSnackbar]);
 
   const getByIdCoordinador = useCallback(async () => {
-    console.log("getById");
-    console.log(baseUrlCoordinador);
-    console.log(baseUrlCoordinador + "/" + idCoordinador);
     await axios
       .get(
-        baseUrlCoordinador + "/" + idCoordinador,
+        baseUrlCoordinador + "/" + props.idCoordinador,
         {
           headers: {
             "Content-Type": "application/json",
@@ -214,15 +219,13 @@ export default function Nota() {
         JSON.stringify({})
       )
       .then((response) => {
-        console.log("Coordinador");
-        console.log(response?.data);
         setCoordiandor(response?.data);
         //setTarea(response?.data);
       })
       .catch((error) => {
         enqueueSnackbar(error + "", { variant: "error" });
       });
-  }, [setCoordiandor, idCoordinador, enqueueSnackbar]);
+  }, [setCoordiandor, props, enqueueSnackbar]);
 
   useEffect(() => {
     /// state
@@ -231,7 +234,7 @@ export default function Nota() {
     getByIdCoordinador();
   }, [getAllGruposDeCoordinador, getByIdCoordinador]);
   return (
-    <div>
+    <>
       {/**
        * en este lugar mostramos las notas pero necesitamos una variable mas el cod que describira el distrito / departamento o nacional
        */}
@@ -239,144 +242,166 @@ export default function Nota() {
       {/*<DocuPDF poema={poema} />*/}
       {/*</PDFViewer>*/}
       {/** Nro - Nota - Equipo - Departamento -  U. Educativa */}
-      <Breadcrumbs aria-label="breadcrumb">
-        <Link underline="hover" to={`/tareas`} color="inherit">
-          Lista de tareas
-        </Link>
-        <Typography color="text.primary">
-          {" "}
-          {coordinador.etapa.nombre}
-        </Typography>
-        <Typography color="text.primary">
-          {" "}
-          {coordinador.nivel.nombre}
-        </Typography>
-      </Breadcrumbs>
 
-      <Grid container alignItems="center">
-        <Grid item xs>
-          <Typography gutterBottom variant="h4" component="div">
-            Notas de area
-          </Typography>
-          <p>
-            Coordinador {coordinador.area}-{coordinador.codigo}
-          </p>
+      <Box
+        sx={{
+          m: 4,
+        }}
+      >
+        <Grid container alignItems="center">
+          <Grid item xs>
+            <p>
+              Coordinador: <strong>{coordinador.area}</strong>
+              {coordinador.codigo === "" ? (
+                ""
+              ) : (
+                <>
+                  {" "}
+                  en <strong>{coordinador.codigo}</strong>
+                </>
+              )}
+            </p>
+            <p>
+              Nivel:
+              <strong>{coordinador.nivel.nombre}</strong>
+            </p>
+            <p>
+              {" "}
+              Etapa: <strong>{coordinador.etapa.nombre}</strong>
+            </p>
+          </Grid>
+          <Grid item>
+            <Stack direction="row" spacing={1}>
+              <DescargarNotas
+                resultado2={resultado2}
+                nombre={
+                  "Coordinador-" +
+                  coordinador.nivel.nombre +
+                  "-" +
+                  coordinador.etapa.nombre +
+                  "-" +
+                  new Date().toLocaleString().substring(0, 9)
+                }
+              />
+              <SubirNotas
+                resultado2={resultado2}
+                nombre={
+                  "Coordinador-" +
+                  coordinador.nivel.nombre +
+                  "-" +
+                  coordinador.etapa.nombre +
+                  "-" +
+                  new Date().toLocaleString().substring(0, 9)
+                }
+                func={getAllGruposDeCoordinador}
+              />
+              <Typography gutterBottom variant="h6" component="div">
+                <Box sx={{ minWidth: 120 }}>
+                  <FormControl fullWidth size="small">
+                    <InputLabel id="demo-simple-select-label">
+                      Departamento
+                    </InputLabel>
+                    <Select
+                      labelId="demo-simple-select-label"
+                      id="demo-simple-select"
+                      value={ciudad}
+                      label="Departamento"
+                      onChange={handleChange}
+                      defaultValue={0}
+                    >
+                      <MenuItem value={"Todos"}>Todos</MenuItem>
+                      {departamentos.map((row, index) => (
+                        <MenuItem key={index} value={row.abr}>
+                          {row.nombre}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
+                </Box>
+              </Typography>
+            </Stack>
+          </Grid>
         </Grid>
-        <Grid item>
-          <Typography gutterBottom variant="h6" component="div">
-            <Box sx={{ minWidth: 25, marginRight: 1 }}>
-              <Button variant="outlined" startIcon={<FileDownload />}>
-                Descargar
-              </Button>
-            </Box>
-          </Typography>
-        </Grid>
-        <Grid item>
-          <Typography gutterBottom variant="h6" component="div">
-            <Box sx={{ minWidth: 320 }}>
-              <FormControl fullWidth>
-                <InputLabel id="demo-simple-select-label">
-                  Departamento
-                </InputLabel>
-                <Select
-                  labelId="demo-simple-select-label"
-                  id="demo-simple-select"
-                  value={ciudad}
-                  label="Departamento"
-                  onChange={handleChange}
-                  defaultValue={0}
-                >
-                  <MenuItem value={"Todos"}>Todos</MenuItem>
-                  {departamentos.map((row, index) => (
-                    <MenuItem key={index} value={row.abr}>
-                      {row.nombre}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-            </Box>
-          </Typography>
-        </Grid>
-      </Grid>
 
-      <TableContainer component={Paper}>
-        <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
-          <TableHead>
-            <TableRow>
-              <TableCell style={{ width: 10 }}>Nro</TableCell>
-              <TableCell align="center" style={{ width: 10 }}>
-                Puntos
-              </TableCell>
-              <TableCell align="center">Equipo</TableCell>
-              <TableCell align="center">Estado</TableCell>
-              <TableCell align="center">Distrito</TableCell>
-              <TableCell align="center">Departamento</TableCell>
-              <TableCell align="center">U.Educativa</TableCell>
-              <TableCell align="center">Acciones</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {resultado2.map((row, index) => (
-              <TableRow
-                key={index}
-                sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-              >
-                <TableCell
-                  align="center"
-                  style={{ width: 10 }}
-                  component="th"
-                  scope="row"
+        <TableContainer component={Paper}>
+          <Table size="small" aria-label="a dense table">
+            <TableHead>
+              <TableRow>
+                <StyledTableCell style={{ width: 10 }}>Nro</StyledTableCell>
+                <StyledTableCell align="center" style={{ width: 10 }}>
+                  Puntos
+                </StyledTableCell>
+                <StyledTableCell align="center">Equipo</StyledTableCell>
+                <StyledTableCell align="center">Estado</StyledTableCell>
+                <StyledTableCell align="center">Distrito</StyledTableCell>
+                <StyledTableCell align="center">Departamento</StyledTableCell>
+                <StyledTableCell align="center">U.Educativa</StyledTableCell>
+                <StyledTableCell align="center">Acciones</StyledTableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {resultado2.map((row, index) => (
+                <TableRow
+                  key={index}
+                  sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                 >
-                  {index < colores.length && row.estado === "Aprobado" ? (
-                    <EmojiEventsTwoToneIcon sx={{ color: colores[index] }} />
-                  ) : (
-                    <>{index + 1}</>
-                  )}
-                </TableCell>
-                <TableCell style={{ width: 10 }} align="right">
-                  {row.puntos}
-                </TableCell>
-                <TableCell align="center">{row.equipo.nombre}</TableCell>
-                <TableCell align="center">
-                  {row.estado === "Aprobado" ? (
-                    <Box
-                      sx={{
-                        bgcolor: "success.main",
-                        color: "success.contrastText",
-                        p: 0,
-                        borderRadius: "30px",
+                  <TableCell
+                    align="center"
+                    style={{ width: 10 }}
+                    component="th"
+                    scope="row"
+                  >
+                    {index < colores.length && row.estado === "Aprobado" ? (
+                      <EmojiEventsTwoToneIcon sx={{ color: colores[index] }} />
+                    ) : (
+                      <>{index + 1}</>
+                    )}
+                  </TableCell>
+                  <TableCell style={{ width: 10 }} align="right">
+                    {row.puntos}
+                  </TableCell>
+                  <TableCell align="center">{row.equipo.nombre}</TableCell>
+                  <TableCell align="center">
+                    {row.estado === "Aprobado" ? (
+                      <Box
+                        sx={{
+                          bgcolor: "success.main",
+                          color: "success.contrastText",
+                          p: 0,
+                          borderRadius: "30px",
+                        }}
+                      >
+                        {row.estado}
+                      </Box>
+                    ) : (
+                      <>{row.estado}</>
+                    )}
+                  </TableCell>
+                  <TableCell align="center">
+                    {row.equipo.colegio.distrito.nombre}
+                  </TableCell>
+                  <TableCell align="center">
+                    {row.equipo.colegio.distrito.departamento}
+                  </TableCell>
+                  <TableCell align="center">
+                    {row.equipo.colegio.nombre}
+                  </TableCell>
+                  <TableCell align="center">
+                    <Button
+                      variant="outlined"
+                      onClick={() => {
+                        seleccionarConsola(row);
                       }}
                     >
-                      {row.estado}
-                    </Box>
-                  ) : (
-                    <>{row.estado}</>
-                  )}
-                </TableCell>
-                <TableCell align="center">
-                  {row.equipo.colegio.distrito.nombre}
-                </TableCell>
-                <TableCell align="center">
-                  {row.equipo.colegio.distrito.departamento}
-                </TableCell>
-                <TableCell align="center">
-                  {row.equipo.colegio.nombre}
-                </TableCell>
-                <TableCell align="center">
-                  <Button
-                    variant="outlined"
-                    onClick={() => {
-                      seleccionarConsola(row);
-                    }}
-                  >
-                    <EditIcon />
-                  </Button>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
+                      <EditIcon />
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </Box>
 
       {/*MODAL UPDATE NEW ELEMENT*/}
       <BootstrapDialog
@@ -458,6 +483,6 @@ export default function Nota() {
           </DialogActions>
         </form>
       </BootstrapDialog>
-    </div>
+    </>
   );
 }

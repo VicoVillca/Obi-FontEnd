@@ -2,7 +2,7 @@ import React, { useEffect, useState, useCallback } from "react";
 import { Link } from "react-router-dom";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
+import TableCell, { tableCellClasses } from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
@@ -49,6 +49,15 @@ const baseUrl = HOST.URL_BACK_END + "olimpiada";
 const baseUrlNivel = HOST.URL_BACK_END + "nivel";
 const header = HOST.headerPublic();
 //galletitas
+const StyledTableCell = styled(TableCell)(({ theme }) => ({
+  [`&.${tableCellClasses.head}`]: {
+    backgroundColor: theme.palette.primary.main,
+    color: theme.palette.common.white,
+  },
+  [`&.${tableCellClasses.body}`]: {
+    fontSize: 14,
+  },
+}));
 //Modal elements
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   "& .MuiDialogContent-root": {
@@ -242,14 +251,14 @@ export default function Olimpiada() {
         <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
           <TableHead>
             <TableRow>
-              <TableCell align="left">idNivel</TableCell>
-              <TableCell align="left">Nombre</TableCell>
-              <TableCell align="left">Descripción</TableCell>
-              <TableCell align="left">MaxEdad</TableCell>
-              <TableCell align="left">Max * Grupo</TableCell>
-              <TableCell align="center" style={{ width: 200 }}>
+              <StyledTableCell align="left">idNivel</StyledTableCell>
+              <StyledTableCell align="left">Nombre</StyledTableCell>
+              <StyledTableCell align="left">Descripción</StyledTableCell>
+              <StyledTableCell align="left">MaxEdad</StyledTableCell>
+              <StyledTableCell align="left">Max * Grupo</StyledTableCell>
+              <StyledTableCell align="center" style={{ width: 200 }}>
                 Acciones
-              </TableCell>
+              </StyledTableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -270,7 +279,7 @@ export default function Olimpiada() {
                 <TableCell align="left">
                   {row.descripcion.length < 200
                     ? row.descripcion
-                    : row.descripcion.substring(0, 10) + "..."}
+                    : row.descripcion.substring(0, 200) + "..."}
                 </TableCell>
                 <TableCell
                   align="center"

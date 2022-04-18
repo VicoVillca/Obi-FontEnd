@@ -34,7 +34,6 @@ export default function Noticia() {
       .get(baseUrl + "/" + cookies.get("olimpiada"), JSON.stringify({}), header)
       .then((response) => {
         setData(response?.data);
-        console.log(response?.data);
       })
       .catch((error) => {
         //alert(error+"");

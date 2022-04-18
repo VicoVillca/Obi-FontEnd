@@ -35,6 +35,7 @@ var tiposDeMaterial = [
 var dependencias = [
   { nombre: "Fiscal", abr: "fiscal" },
   { nombre: "Privado", abr: "Privado" },
+  { nombre: "Convenio", abr: "Convenio" },
 ];
 var roles = [
   { nombre: "Tutor", abr: "TUTOR" },

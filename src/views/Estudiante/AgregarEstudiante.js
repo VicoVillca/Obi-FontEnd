@@ -45,10 +45,25 @@ export default function Paso1() {
 
   const handleChangle = (e) => {
     const { name, value } = e.target;
-    setConsolaSeleccionada((prevState) => ({
-      ...prevState,
-      [name]: value,
-    }));
+    if (
+      (name === "nombre" || name === "apPaterno" || name === "apMaterno") &&
+      value !== ""
+    ) {
+      //value[0] = value[0].toUpperCase();
+      const val = value[0].toUpperCase() + value.substr(1, value.length);
+      console.log(value[0].toUpperCase() + value.substr(1, value.length));
+      setConsolaSeleccionada((prevState) => ({
+        ...prevState,
+        [name]: val,
+      }));
+    } else {
+      console.log("NOOOO");
+      setConsolaSeleccionada((prevState) => ({
+        ...prevState,
+        [name]: value,
+      }));
+    }
+    console.log(consoleSeleccionada);
   };
 
   //---    INSERT    --//
@@ -134,6 +149,8 @@ export default function Paso1() {
                   name="ci"
                   type="text"
                   autoComplete="off"
+                  minLength="7"
+                  maxLength="10"
                   onChange={handleChangle}
                 />
               </GridItem>
@@ -204,6 +221,8 @@ export default function Paso1() {
                   label="Celular"
                   name="celular"
                   type="number"
+                  minLength="8"
+                  maxLength="11"
                   autoComplete="off"
                   onChange={handleChangle}
                 />

@@ -58,7 +58,7 @@ export default function LabTabs() {
     getAll();
   }, [getAll]);
   return (
-    <Box sx={{ width: "100%", typography: "body1" }}>
+    <Box sx={{ width: "100%", typography: "body1", border: "1px dashed grey" }}>
       <TabContext value={value}>
         <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
           <Tabs

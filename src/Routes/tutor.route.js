@@ -29,6 +29,7 @@ import Noticia from "views/Noticias/ViewNoticia.js";
 import Notas from "views/Nota/Notas.js";
 import QuienesSomos from "views/QuienesSomos/QuienesSomos.js";
 import UserProfile from "views/Usuario/PerfilUsuario";
+import Reporte from "views_user/Inscripcion/Reporte";
 
 //List Icons
 
@@ -36,6 +37,7 @@ import LinearScaleIcon from "@mui/icons-material/LinearScale";
 import InterestsIcon from "@mui/icons-material/Interests";
 import FormatListNumberedIcon from "@mui/icons-material/FormatListNumbered";
 import AppRegistrationIcon from "@mui/icons-material/AppRegistration";
+import GroupsIcon from "@mui/icons-material/Groups";
 // core components/views for RTL layout
 //holaaa
 const tutorRoutes = [
@@ -64,6 +66,14 @@ const tutorRoutes = [
     visible: true,
   },
   {
+    path: "/equipos",
+    name: "Equipos",
+    icon: GroupsIcon,
+    component: Reporte,
+    layout: "",
+    visible: true,
+  },
+  {
     path: "/niveles",
     name: "Niveles",
     icon: InterestsIcon,
@@ -79,9 +89,10 @@ const tutorRoutes = [
     layout: "",
     visible: true,
   },
+
   {
     path: "/notas",
-    name: "Notas",
+    name: "Notas Generales",
     icon: FormatListNumberedIcon,
     component: Notas,
     layout: "",

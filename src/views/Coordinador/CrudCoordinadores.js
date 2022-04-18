@@ -91,7 +91,14 @@ export default function Notas() {
     getNiveles();
   }, [getEtapas, getNiveles]);
   return (
-    <Box sx={{ width: "100%", height: "100%", typography: "body1" }}>
+    <Box
+      sx={{
+        width: "100%",
+        height: "100%",
+        typography: "body1",
+        border: "1px dashed grey",
+      }}
+    >
       <TabContext value={value}>
         <Box
           display="flex"
@@ -156,7 +163,7 @@ export default function Notas() {
           <Grid item xs={10}>
             <Box sx={{ flexGrow: 1, p: 2 }}>
               {nivel === "" || etapa === "" ? (
-                "oh Nouu"
+                "Cargandoo....."
               ) : (
                 <CrudCoordinadoresPorArea idNivel={nivel} idEtapa={etapa} />
               )}

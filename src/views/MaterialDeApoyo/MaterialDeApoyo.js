@@ -2,7 +2,7 @@ import React, { useEffect, useState, useCallback } from "react";
 
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
+import TableCell, { tableCellClasses } from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
@@ -86,6 +86,15 @@ BootstrapDialogTitle.propTypes = {
   onClose: PropTypes.func.isRequired,
 };
 //initialñ state
+const StyledTableCell = styled(TableCell)(({ theme }) => ({
+  [`&.${tableCellClasses.head}`]: {
+    backgroundColor: theme.palette.primary.main,
+    color: theme.palette.common.white,
+  },
+  [`&.${tableCellClasses.body}`]: {
+    fontSize: 14,
+  },
+}));
 
 export default function Olimpiada() {
   const { enqueueSnackbar } = useSnackbar();
@@ -301,13 +310,13 @@ export default function Olimpiada() {
         <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
           <TableHead>
             <TableRow>
-              <TableCell style={{ width: 10 }}>Nro</TableCell>
-              <TableCell align="left">Titulo</TableCell>
-              <TableCell align="center">Tipo</TableCell>
-              <TableCell align="left">Enlace</TableCell>
-              <TableCell align="center" style={{ width: 200 }}>
+              <StyledTableCell style={{ width: 10 }}>Nro</StyledTableCell>
+              <StyledTableCell align="left">Titulo</StyledTableCell>
+              <StyledTableCell align="center">Tipo</StyledTableCell>
+              <StyledTableCell align="left">Enlace</StyledTableCell>
+              <StyledTableCell align="center" style={{ width: 200 }}>
                 Acciones
-              </TableCell>
+              </StyledTableCell>
             </TableRow>
           </TableHead>
           <TableBody>

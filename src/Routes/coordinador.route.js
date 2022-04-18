@@ -31,7 +31,6 @@ import Notas from "views/Nota/Notas.js";
 import QuienesSomos from "views/QuienesSomos/QuienesSomos.js";
 import UserProfile from "views/Usuario/PerfilUsuario";
 import Tareas from "views_user/Coordinador/Tareas.js";
-import Tarea from "views_user/Coordinador/Tarea.js";
 
 //iconos
 import PrecisionManufacturingIcon from "@mui/icons-material/PrecisionManufacturing";
@@ -68,14 +67,7 @@ const dashboardRoutes = [
     layout: "",
     visible: true,
   },
-  {
-    path: "/tarea/:idCoordinador",
-    name: "Tarea",
-    icon: PrecisionManufacturingIcon,
-    component: Tarea,
-    layout: "",
-    visible: false,
-  },
+
   {
     path: "/niveles",
     name: "Niveles",

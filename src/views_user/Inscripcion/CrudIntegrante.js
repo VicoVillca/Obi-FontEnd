@@ -8,7 +8,7 @@ import Grid from "@mui/material/Grid";
 import Button from "@mui/material/Button";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
+import TableCell, { tableCellClasses } from "@mui/material/TableCell";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
@@ -95,7 +95,15 @@ BootstrapDialogTitle.propTypes = {
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
-
+const StyledTableCell = styled(TableCell)(({ theme }) => ({
+  [`&.${tableCellClasses.head}`]: {
+    backgroundColor: theme.palette.primary.main,
+    color: theme.palette.common.white,
+  },
+  [`&.${tableCellClasses.body}`]: {
+    fontSize: 14,
+  },
+}));
 export default function Paso3() {
   const { enqueueSnackbar } = useSnackbar();
 
@@ -447,12 +455,16 @@ export default function Paso3() {
                 >
                   <TableHead>
                     <TableRow>
-                      <TableCell align="center">RUDE</TableCell>
-                      <TableCell align="center">CI</TableCell>
-                      <TableCell align="center">NOMBRE</TableCell>
-                      <TableCell align="center">APPATERNO</TableCell>
-                      <TableCell align="center">APMATERNO</TableCell>
-                      <TableCell align="center">ACCIONES</TableCell>
+                      <StyledTableCell align="center">RUDE</StyledTableCell>
+                      <StyledTableCell align="center">CI</StyledTableCell>
+                      <StyledTableCell align="center">NOMBRE</StyledTableCell>
+                      <StyledTableCell align="center">
+                        APPATERNO
+                      </StyledTableCell>
+                      <StyledTableCell align="center">
+                        APMATERNO
+                      </StyledTableCell>
+                      <StyledTableCell align="center">ACCIONES</StyledTableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
@@ -563,9 +575,7 @@ export default function Paso3() {
                             >
                               <TableCell align="center">{row.rude}</TableCell>
                               <TableCell align="center">
-                                {row.nombre}
-                                {row.apPaterno}
-                                {row.apMaterno}
+                                {row.nombre} {row.apPaterno} {row.apMaterno}
                               </TableCell>
                               <TableCell align="center">
                                 {calcularEdad(row.fechaNac) <

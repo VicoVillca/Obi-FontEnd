@@ -27,16 +27,11 @@ const baseUrl = HOST.URL_BACK_END + "olimpiada";
 const header = HOST.headerPublic();
 
 const steps = [
-  "Crear grupos",
-  "Agregar estudiantes a los grupos creados",
-  "Reporte oficial",
+  "Crear equipos",
+  "Agregar estudiantes a los equipos creados",
+  "Fin",
 ];
-const components = [
-  <CrudGrupo />,
-  <CrudIntegrante />,
-  <Reporte />,
-  <Reporte />,
-];
+const components = [<CrudGrupo />, <CrudIntegrante />, <Reporte />];
 
 const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;

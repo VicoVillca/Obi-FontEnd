@@ -106,8 +106,14 @@ export default function SignInSide() {
             </Typography>
 
             <Typography>Gracias por formar parte del Team OBI.</Typography>
+            <br />
             <List
-              sx={{ width: "100%", maxWidth: 360, bgcolor: "background.paper" }}
+              sx={{
+                width: "100%",
+                maxWidth: 560,
+                bgcolor: "background.paper",
+                border: "1px dashed grey",
+              }}
               component="nav"
               aria-labelledby="nested-list-subheader"
               subheader={
@@ -133,6 +139,7 @@ export default function SignInSide() {
                 )
               )}
             </List>
+            <br />
 
             <Button color="danger" onClick={() => handleSignOut()} round>
               Cerrar Session
