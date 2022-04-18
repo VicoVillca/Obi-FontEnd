@@ -12,7 +12,6 @@ import TabPanel from "@mui/lab/TabPanel";
 //footer
 import Footer from "components/Footer/Footer.js";
 //icons
-import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
 import LogoutIcon from "@mui/icons-material/Logout";
 //tab
 import Tabs from "@mui/material/Tabs";
@@ -29,7 +28,6 @@ import Distrito from "views/Distrito/CrudDistrito";
 import Colegio from "views/Colegio/CrudColegio";
 import Estudiantes from "views/Estudiante/Estudiantes";
 import Usuario from "views/Usuario/CrudUsuario";
-import UserProfile from "views/Usuario/PerfilUsuario";
 import styles from "assets/jss/material-dashboard-react/components/headerLinksStyle.js";
 
 import avatar1 from "assets/img/reactlogo.png";
@@ -150,15 +148,7 @@ export default function ProminentAppBar() {
               }
               value={"5"}
             />
-            <Tab
-              label={
-                <>
-                  <ManageAccountsIcon />
-                  Perfil
-                </>
-              }
-              value={"6"}
-            />
+
             <Tab
               label={
                 <>
@@ -166,7 +156,7 @@ export default function ProminentAppBar() {
                   Usuarios
                 </>
               }
-              value={"7"}
+              value={"6"}
             />
           </Tabs>
         </Box>
@@ -186,10 +176,8 @@ export default function ProminentAppBar() {
           <TabPanel value={"5"}>
             <Estudiantes />
           </TabPanel>
+
           <TabPanel value={"6"}>
-            <UserProfile />
-          </TabPanel>
-          <TabPanel value={"7"}>
             <Usuario />
           </TabPanel>
         </Box>

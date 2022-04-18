@@ -214,6 +214,7 @@ export default function Olimpiada() {
                 type="text"
                 onChange={handleChangeSearch}
                 value={buscar}
+                size="small"
                 InputProps={{
                   endAdornment: (
                     <InputAdornment position="end">

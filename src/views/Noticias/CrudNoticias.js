@@ -208,6 +208,7 @@ export default function Olimpiada() {
                 label="Buscar..."
                 name="fechaNac"
                 type="text"
+                size="small"
                 onChange={handleChangeSearch}
                 value={buscar}
                 InputProps={{

@@ -86,6 +86,7 @@ export default function UserProfile() {
         },
       })
       .then((response) => {
+        console.log(response);
         setUsuario(response?.data);
       })
       .catch((error) => {

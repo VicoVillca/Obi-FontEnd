@@ -42,6 +42,7 @@ import ConfigOlimpiada from "views/Olimpiada/ConfigOlimpiada";
 import AddNivel from "views/Nivel/AddNivel";
 import EditNivel from "views/Nivel/EditNivel";
 import ViewNivel from "views/Nivel/ViewNivel";
+import UserProfile from "views/Usuario/PerfilUsuario";
 
 import ViewNoticia from "views/Noticias/ViewNoticia";
 import AddNoticia from "views/Noticias/AddNoticia";
@@ -55,6 +56,14 @@ const dashboardRoutes = [
     name: "Inicio",
     icon: Dashboard,
     component: DashboardPage,
+    layout: "",
+    visible: true,
+  },
+  {
+    path: "/perfil",
+    name: "Perfil",
+    icon: Person,
+    component: UserProfile,
     layout: "",
     visible: true,
   },
