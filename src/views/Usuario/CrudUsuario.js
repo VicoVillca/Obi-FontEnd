@@ -317,6 +317,7 @@ export default function Olimpiada() {
                 label="Buscar..."
                 name="fechaNac"
                 type="text"
+                size="small"
                 onChange={handleChangeSearch}
                 value={buscar}
                 InputProps={{
@@ -334,7 +335,7 @@ export default function Olimpiada() {
         <Grid item>
           <Typography gutterBottom variant="h6" component="div">
             <Box sx={{ maxWidth: 150, minWidth: 150, marginRight: 1 }}>
-              <FormControl fullWidth>
+              <FormControl fullWidth size="small">
                 <InputLabel id="demo-simple-select-label">Roles</InputLabel>
                 <Select
                   labelId="demo-simple-select-label"

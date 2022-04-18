@@ -298,6 +298,7 @@ export default function Olimpiada() {
                 id="fechaNac"
                 label="Buscar..."
                 name="fechaNac"
+                size="small"
                 type="text"
                 onChange={handleChangeSearch}
                 value={buscar}

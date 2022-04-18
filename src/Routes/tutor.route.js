@@ -28,7 +28,6 @@ import ListaEtapas from "views/Etapa/ListaEtapas";
 import Noticia from "views/Noticias/ViewNoticia.js";
 import Notas from "views/Nota/Notas.js";
 import QuienesSomos from "views/QuienesSomos/QuienesSomos.js";
-import UserProfile from "views/Usuario/PerfilUsuario";
 import Reporte from "views_user/Inscripcion/Reporte";
 
 //List Icons
@@ -49,14 +48,7 @@ const tutorRoutes = [
     layout: "",
     visible: true,
   },
-  {
-    path: "/perfil",
-    name: "Perfil",
-    icon: Person,
-    component: UserProfile,
-    layout: "",
-    visible: true,
-  },
+
   {
     path: "/inscripcion",
     name: "Inscripciones",

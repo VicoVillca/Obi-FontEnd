@@ -29,7 +29,6 @@ import Etapa from "views/Etapa/ViewEtapa.js";
 import Noticia from "views/Noticias/ViewNoticia";
 import Notas from "views/Nota/Notas.js";
 import QuienesSomos from "views/QuienesSomos/QuienesSomos.js";
-import UserProfile from "views/Usuario/PerfilUsuario";
 import Tareas from "views_user/Coordinador/Tareas.js";
 
 //iconos
@@ -51,14 +50,6 @@ const dashboardRoutes = [
     visible: true,
   },
 
-  {
-    path: "/perfil",
-    name: "Perfil",
-    icon: Person,
-    component: UserProfile,
-    layout: "",
-    visible: true,
-  },
   {
     path: "/tareas",
     name: "Tareas",

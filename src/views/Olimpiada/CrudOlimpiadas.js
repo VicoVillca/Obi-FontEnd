@@ -230,7 +230,7 @@ export default function Olimpiada() {
       <Grid container alignItems="center">
         <Grid item xs>
           <Typography gutterBottom variant="h4" component="div">
-            Lista de Olimpiadas
+            Lista de olimpiadas
           </Typography>
         </Grid>
 
@@ -245,6 +245,7 @@ export default function Olimpiada() {
                 label="Buscar..."
                 name="fechaNac"
                 type="text"
+                size="small"
                 onChange={handleChangeSearch}
                 value={buscar}
                 InputProps={{

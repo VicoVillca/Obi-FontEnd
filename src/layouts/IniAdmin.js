@@ -1,6 +1,4 @@
-import * as React from "react";
-import { styled } from "@mui/material/styles";
-import makeStyles from "@mui/styles/makeStyles";
+import React, { useState } from "react";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
@@ -10,6 +8,14 @@ import Cookies from "universal-cookie";
 import TabContext from "@mui/lab/TabContext";
 import TabPanel from "@mui/lab/TabPanel";
 //footer
+///ELEMENTS FOR DIALOG
+
+import PropTypes from "prop-types";
+import { styled } from "@mui/material/styles";
+import Dialog from "@mui/material/Dialog";
+import DialogTitle from "@mui/material/DialogTitle";
+import DialogContent from "@mui/material/DialogContent";
+import CloseIcon from "@mui/icons-material/Close";
 import Footer from "components/Footer/Footer.js";
 //icons
 import LogoutIcon from "@mui/icons-material/Logout";
@@ -28,28 +34,63 @@ import Distrito from "views/Distrito/CrudDistrito";
 import Colegio from "views/Colegio/CrudColegio";
 import Estudiantes from "views/Estudiante/Estudiantes";
 import Usuario from "views/Usuario/CrudUsuario";
-import styles from "assets/jss/material-dashboard-react/components/headerLinksStyle.js";
+import UpdatePerfil from "views/Usuario/UpdatePerfil";
+import UpdatePasword from "views/Usuario/UpdatePasword";
 
-import avatar1 from "assets/img/reactlogo.png";
 //Styles
 // core components
+import MenuIcon from "@mui/icons-material/Menu";
+import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
+import FingerprintIcon from "@mui/icons-material/Fingerprint";
 
-//instancias de variabvles
-const StyledToolbar = styled(Toolbar)(({ theme }) => ({
-  alignItems: "flex-start",
-  paddingTop: theme.spacing(1),
-  paddingBottom: theme.spacing(2),
-  // Override media queries injected by theme.mixins.toolbar
-  "@media all": {
-    minHeight: 2,
+const cookies = new Cookies();
+const BootstrapDialog = styled(Dialog)(({ theme }) => ({
+  "& .MuiDialogContent-root": {
+    padding: theme.spacing(2),
+  },
+  "& .MuiDialogActions-root": {
+    padding: theme.spacing(1),
   },
 }));
-const useStyles = makeStyles(styles);
-const cookies = new Cookies();
-export default function ProminentAppBar() {
-  const classes = useStyles();
-  const [value, setValue] = React.useState("1");
 
+const BootstrapDialogTitle = (props) => {
+  const { children, onClose, ...other } = props;
+
+  return (
+    <DialogTitle sx={{ m: 0, p: 2 }} {...other}>
+      {children}
+      {onClose ? (
+        <IconButton
+          aria-label="close"
+          onClick={onClose}
+          sx={{
+            position: "absolute",
+            right: 2,
+            top: 2,
+            color: (theme) => theme.palette.grey[300],
+          }}
+        >
+          <CloseIcon />
+        </IconButton>
+      ) : null}
+    </DialogTitle>
+  );
+};
+
+BootstrapDialogTitle.propTypes = {
+  children: PropTypes.node,
+  onClose: PropTypes.func.isRequired,
+};
+export default function ProminentAppBar() {
+  const [value, setValue] = React.useState("1");
+  const [openModalUpdate, setOpenUpdate] = useState(false);
+  const [openModalPasword, setOpenPasword] = useState(false);
+  const handleModalUpdate = () => {
+    setOpenUpdate(!openModalUpdate);
+  };
+  const handleModalPasword = () => {
+    setOpenPasword(!openModalPasword);
+  };
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
@@ -63,31 +104,83 @@ export default function ProminentAppBar() {
   };
   return (
     <>
-      <AppBar position="static" color={"primary"}>
-        <StyledToolbar>
-          <Typography
-            variant="h5"
-            noWrap
-            component="div"
-            sx={{ flexGrow: 1, alignSelf: "flex-end" }}
-          >
-            <img src={avatar1} width={20} height={20} alt="logo1" />
-            Olimpiada Boliviana de Informatica
-          </Typography>
-
-          <div className={classes.manager}>
+      <Box sx={{ flexGrow: 1 }}>
+        <AppBar position="static">
+          <Toolbar>
             <IconButton
               size="large"
-              aria-label="display more actions"
-              edge="end"
+              edge="start"
               color="inherit"
-              onClick={handleSignOut}
+              aria-label="open drawer"
+              sx={{ mr: 2 }}
             >
-              <LogoutIcon />
+              <MenuIcon />
             </IconButton>
-          </div>
-        </StyledToolbar>
-      </AppBar>
+            <Typography
+              variant="h6"
+              noWrap
+              component="div"
+              sx={{ display: { xs: "none", sm: "block" } }}
+            >
+              Panel de Administrador
+            </Typography>
+
+            <Box sx={{ flexGrow: 1 }} />
+            <Box sx={{ display: { xs: "none", md: "flex" } }}>
+              <IconButton
+                size="large"
+                edge="end"
+                aria-label="account of current user"
+                aria-haspopup="true"
+                color="inherit"
+                onClick={() => handleModalUpdate()}
+              >
+                <ManageAccountsIcon />
+              </IconButton>
+              <IconButton
+                size="large"
+                edge="end"
+                aria-label="account of current user"
+                aria-haspopup="true"
+                color="inherit"
+                onClick={() => handleModalPasword()}
+              >
+                <FingerprintIcon />
+              </IconButton>
+              <IconButton
+                size="large"
+                edge="end"
+                aria-label="account of current user"
+                aria-haspopup="true"
+                color="inherit"
+                onClick={handleSignOut}
+              >
+                <LogoutIcon />
+              </IconButton>
+            </Box>
+            <Box sx={{ display: { xs: "flex", md: "none" } }}>
+              <IconButton
+                size="large"
+                edge="end"
+                aria-label="account of current user"
+                aria-haspopup="true"
+                color="inherit"
+              >
+                <FingerprintIcon />
+              </IconButton>
+              <IconButton
+                size="large"
+                aria-label="show more"
+                aria-haspopup="true"
+                onClick={handleSignOut}
+                color="inherit"
+              >
+                <LogoutIcon />
+              </IconButton>
+            </Box>
+          </Toolbar>
+        </AppBar>
+      </Box>
 
       <TabContext value={value}>
         <Box
@@ -183,6 +276,44 @@ export default function ProminentAppBar() {
         </Box>
         <Footer />
       </TabContext>
+
+      {/*MODAL UPDATE NEW ELEMENT*/}
+      <BootstrapDialog
+        onClose={handleModalUpdate}
+        aria-labelledby="customized-dialog-title"
+        open={openModalUpdate}
+        maxWidth={"sm"}
+      >
+        <BootstrapDialogTitle
+          id="customized-dialog-title"
+          onClose={handleModalUpdate}
+        >
+          Editar Perfil
+        </BootstrapDialogTitle>
+
+        <DialogContent>
+          <UpdatePerfil func={handleModalUpdate} />
+        </DialogContent>
+      </BootstrapDialog>
+      {/*MODAL Pasword New*/}
+
+      <BootstrapDialog
+        onClose={handleModalPasword}
+        aria-labelledby="customized-dialog-title"
+        open={openModalPasword}
+        maxWidth={"sm"}
+      >
+        <BootstrapDialogTitle
+          id="customized-dialog-title"
+          onClose={handleModalPasword}
+        >
+          Cambiar la Contraseña
+        </BootstrapDialogTitle>
+
+        <DialogContent>
+          <UpdatePasword func={handleModalPasword} />
+        </DialogContent>
+      </BootstrapDialog>
     </>
   );
 }

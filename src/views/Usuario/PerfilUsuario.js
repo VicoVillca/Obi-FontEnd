@@ -9,7 +9,7 @@ import CardHeader from "components/Card/CardHeader.js";
 import CardAvatar from "components/Card/CardAvatar.js";
 import CardBody from "components/Card/CardBody.js";
 
-import avatar from "assets/img/faces/marc.jpg";
+import avatar from "assets/img/imgloginedit.png";
 import FingerprintIcon from "@mui/icons-material/Fingerprint";
 // input formularios
 import TextField from "@mui/material/TextField";
