@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
@@ -7,6 +7,8 @@ import Typography from "@mui/material/Typography";
 import Cookies from "universal-cookie";
 import TabContext from "@mui/lab/TabContext";
 import TabPanel from "@mui/lab/TabPanel";
+//notifications
+import { useSnackbar } from "notistack";
 //footer
 ///ELEMENTS FOR DIALOG
 
@@ -82,6 +84,7 @@ BootstrapDialogTitle.propTypes = {
   onClose: PropTypes.func.isRequired,
 };
 export default function ProminentAppBar() {
+  const { enqueueSnackbar } = useSnackbar();
   const [value, setValue] = React.useState("1");
   const [openModalUpdate, setOpenUpdate] = useState(false);
   const [openModalPasword, setOpenPasword] = useState(false);
@@ -102,6 +105,12 @@ export default function ProminentAppBar() {
     cookies.remove("nombreolimpiada", { path: "/" });
     window.location.href = "/";
   };
+  useEffect(() => {
+    /// state
+    enqueueSnackbar("Bienvenido... al Panel de administrador !", {
+      variant: "success",
+    });
+  }, [enqueueSnackbar]);
   return (
     <>
       <Box sx={{ flexGrow: 1 }}>

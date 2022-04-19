@@ -52,6 +52,7 @@ import { roles } from "variables/general";
 import axios from "axios";
 import HOST from "variables/general.js";
 const baseUrl = HOST.URL_BACK_END + "user";
+const baseUrlContraseña = HOST.URL_BACK_END + "auth/recuperar";
 const header = HOST.headerPublic();
 //galletitas
 //Modal elements
@@ -172,7 +173,7 @@ export default function Olimpiada() {
   const seleccionarData = (consola, caso) => {
     setConsolaSeleccionada(consola);
     console.log(consoleSeleccionada);
-    console.log(caso);
+
     if (caso === "Editar") handleModalUpdate();
     if (caso === "Eliminar") handleModalDelete();
     if (caso === "contraseña") handleModalContraseña();
@@ -241,13 +242,34 @@ export default function Olimpiada() {
   const Contraseña = async (event) => {
     event.preventDefault();
     console.log("Contraseña");
-    console.log(consoleSeleccionada);
     handleModalContraseña();
-    //showNotificationSuccess('success','Se elimino el grupo');
-    enqueueSnackbar("Se envio el correo para su modificacion!", {
-      variant: "success",
-    });
-    getAll();
+
+    await axios
+      .post(
+        baseUrlContraseña,
+        JSON.stringify({
+          correo: consoleSeleccionada.correo,
+        }),
+        header
+      )
+      .then((response) => {
+        console.log(response);
+        //showNotificationSuccess('success','Grupo guardado con exito');
+        enqueueSnackbar(
+          "Se envio la solicitud para cambiar la contraseña al correo!",
+          {
+            variant: "success",
+          }
+        );
+        getAll();
+      })
+      .catch((error) => {
+        //alert(error+"");
+        enqueueSnackbar(
+          "No se pudo enviar la solicitud de contraseña nueva al correo",
+          { variant: "error" }
+        );
+      });
   };
   //---    DELETE    --//
   const Delete = async (event) => {
@@ -737,7 +759,7 @@ export default function Olimpiada() {
 
       {/*MODAL required new pasword*/}
       <BootstrapDialog
-        onClose={handleModalDelete}
+        onClose={handleModalContraseña}
         aria-labelledby="customized-dialog-title"
         open={openModalContraseña}
         maxWidth="10%"
@@ -752,7 +774,7 @@ export default function Olimpiada() {
           <DialogContent dividers>
             <GridContainer>
               <GridItem xs={12} sm={12} md={12}>
-                Se enviara una la solicitud de nueva contraseña al correo{" "}
+                Se enviara una solicitud de nueva contraseña al correo{" "}
                 <strong>{consoleSeleccionada.correo}</strong>?
               </GridItem>
             </GridContainer>

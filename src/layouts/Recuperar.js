@@ -6,6 +6,7 @@ import CardBody from "components/Card/CardBody.js";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Link from "@mui/material/Link";
+import { withRouter } from "react-router-dom";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 
@@ -112,7 +113,8 @@ BootstrapDialogTitle.propTypes = {
 };
 
 const useStyles = makeStyles(styles);
-export default function SignIn() {
+export default withRouter(function SignIn(props) {
+  const { history } = props;
   let { token } = useParams();
   const classes = useStyles();
 
@@ -148,19 +150,25 @@ export default function SignIn() {
       )
       .then((response) => {
         //showNotificationSuccess('success','Grupo guardado con exito');
-        console.log(response);
+
+        enqueueSnackbar(
+          "ahora puede iniciar sección con su contraseña nueva!",
+          {
+            variant: "info",
+          }
+        );
         enqueueSnackbar("Se Guardo la contraseña con exito!", {
           variant: "success",
         });
-        window.location.href = "./";
+        history.push("/");
       })
       .catch((error) => {
         //alert(error+"");
-        console.log(error);
+
         enqueueSnackbar("No se pudo modificar la contraseña.", {
           variant: "error",
         });
-        window.location.href = "./";
+        history.push("/");
       });
   };
 
@@ -173,7 +181,7 @@ export default function SignIn() {
         open={true}
         maxWidth={"sm"}
       >
-        <DialogContent profile>
+        <DialogContent>
           <Box
             sx={{
               display: "flex",
@@ -264,4 +272,4 @@ export default function SignIn() {
       </BootstrapDialog>
     </div>
   );
-}
+});
