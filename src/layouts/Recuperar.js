@@ -152,6 +152,7 @@ export default function SignIn() {
         enqueueSnackbar("Se Guardo la contraseña con exito!", {
           variant: "success",
         });
+        window.location.href = "./";
       })
       .catch((error) => {
         //alert(error+"");
@@ -159,6 +160,7 @@ export default function SignIn() {
         enqueueSnackbar("No se pudo modificar la contraseña.", {
           variant: "error",
         });
+        window.location.href = "./";
       });
   };
 
