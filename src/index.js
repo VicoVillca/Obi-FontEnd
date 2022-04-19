@@ -16,6 +16,7 @@ import SignIn from "layouts/SignIn.js";
 import Inicio from "layouts/Inicio.js";
 import IniAdmin from "layouts/IniAdmin.js";
 import Coordinador from "layouts/Coordinador.js";
+import Recuperar from "layouts/Recuperar.js";
 import Cookies from "universal-cookie";
 import { SnackbarProvider } from "notistack";
 const cookies = new Cookies();
@@ -35,6 +36,7 @@ ReactDOM.render(
         <StyledEngineProvider injectFirst>
           <Router history={hist}>
             <Switch>
+              <Route exact path="/recuperar/:token" component={Recuperar} />
               {cookies.get("rol") !== undefined ? (
                 <>
                   {cookies.get("olimpiada") !== undefined ? (
