@@ -114,7 +114,7 @@ const dashboardRoutes = [
     icon: Person,
     component: QuienesSomos,
     layout: "",
-    visible: true,
+    visible: false,
   },
 ];
 

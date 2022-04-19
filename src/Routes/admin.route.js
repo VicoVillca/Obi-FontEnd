@@ -184,7 +184,7 @@ const dashboardRoutes = [
     icon: Unarchive,
     component: QuienesSomos,
     layout: "",
-    visible: true,
+    visible: false,
   },
 ];
 

@@ -39,6 +39,7 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
+import VerifiedIcon from "@mui/icons-material/Verified";
 //notifications
 import { useSnackbar } from "notistack";
 //galletitas
@@ -369,7 +370,14 @@ export default function Olimpiada() {
                 <TableCell align="left">{row.fechaNac}</TableCell>
                 <TableCell align="left">{row.genero}</TableCell>
                 <TableCell align="left">{row.ci}</TableCell>
-                <TableCell align="left">{row.correo}</TableCell>
+                <TableCell align="left">
+                  {row.correo}
+                  {!row.correoVerificado ? (
+                    "no"
+                  ) : (
+                    <VerifiedIcon color="success" />
+                  )}
+                </TableCell>
 
                 <TableCell align="center">
                   <Button

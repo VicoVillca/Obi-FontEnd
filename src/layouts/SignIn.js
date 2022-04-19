@@ -373,7 +373,7 @@ export default withRouter(function SignIn(props) {
               <GridItem xs={12} sm={12} md={12}>
                 <DialogContentText>
                   <strong>
-                    Necesitamso algo de tiempo para revisar tu solicitud
+                    Necesitamos algo de tiempo para revisar tu solicitud
                   </strong>
                   <br />
                   Introduce una dirección de correo electronico para que podamos

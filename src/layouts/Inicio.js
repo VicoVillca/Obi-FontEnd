@@ -134,7 +134,7 @@ export default function SignInSide() {
       }
     );
     getAll();
-  }, [getAll]);
+  }, [getAll, enqueueSnackbar]);
 
   return (
     <>

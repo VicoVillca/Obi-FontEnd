@@ -17,6 +17,7 @@ import Inicio from "layouts/Inicio.js";
 import IniAdmin from "layouts/IniAdmin.js";
 import Coordinador from "layouts/Coordinador.js";
 import Recuperar from "layouts/Recuperar.js";
+import ConfirmarCorreoEstudiante from "layouts/ConfirmarCorreoEstudiante";
 import Cookies from "universal-cookie";
 import { SnackbarProvider } from "notistack";
 const cookies = new Cookies();
@@ -37,6 +38,11 @@ ReactDOM.render(
           <Router history={hist}>
             <Switch>
               <Route exact path="/recuperar/:token" component={Recuperar} />
+              <Route
+                exact
+                path="/confirmarCorreo/:token"
+                component={ConfirmarCorreoEstudiante}
+              />
               {cookies.get("rol") !== undefined ? (
                 <>
                   {cookies.get("olimpiada") !== undefined ? (
