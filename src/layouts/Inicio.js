@@ -127,6 +127,12 @@ export default function SignInSide() {
   }, [setResultado, enqueueSnackbar]);
   useEffect(() => {
     /// state
+    enqueueSnackbar(
+      "Bienvenido " + cookies.get("username") + " al Panel de usuario !",
+      {
+        variant: "success",
+      }
+    );
     getAll();
   }, [getAll]);
 
