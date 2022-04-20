@@ -6,6 +6,8 @@ import Alert from "@mui/material/Alert";
 import IconButton from "@mui/material/IconButton";
 import AlertTitle from "@mui/material/AlertTitle";
 import Grid from "@mui/material/Grid";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
 
 import GridContainer from "components/Grid/GridContainer.js";
 import Table from "@mui/material/Table";
@@ -17,7 +19,6 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
 import FormatListNumberedIcon from "@mui/icons-material/FormatListNumbered";
-import InsightsIcon from "@mui/icons-material/Insights";
 import { styled } from "@mui/material/styles";
 import axios from "axios";
 import { useSnackbar } from "notistack";
@@ -86,6 +87,7 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
 export default function Reportes() {
   const { enqueueSnackbar } = useSnackbar();
   const [equipos, setEquipos] = useState([]);
+
   const [estudiantes, setEstudiantes] = useState([]);
   const [openModalUpdate, setOpenUpdate] = useState(false);
   const seleccionarConsola = (consola) => {
@@ -95,6 +97,7 @@ export default function Reportes() {
   const handleModalUpdate = () => {
     setOpenUpdate(!openModalUpdate);
   };
+
   const getAllEquipos = useCallback(async () => {
     await axios
       .get(
@@ -152,11 +155,12 @@ export default function Reportes() {
                   <TableRow>
                     <StyledTableCell align="center">IDEQUIPO</StyledTableCell>
                     <StyledTableCell align="center">NOMBRE</StyledTableCell>
-                    <StyledTableCell align="center">COLEGIO</StyledTableCell>
-                    <StyledTableCell align="center">DISTRITO</StyledTableCell>
+                    <StyledTableCell align="center">Distrital</StyledTableCell>
                     <StyledTableCell align="center">
-                      DEPARTAMENTO
+                      Departamental
                     </StyledTableCell>
+                    <StyledTableCell align="center">Nacional</StyledTableCell>
+                    <StyledTableCell align="center">COLEGIO</StyledTableCell>
                     <StyledTableCell align="center">NIVEL</StyledTableCell>
                     <StyledTableCell align="center">ACCIONES</StyledTableCell>
                   </TableRow>
@@ -169,33 +173,78 @@ export default function Reportes() {
                     >
                       <TableCell align="center">{row.idEquipo}</TableCell>
                       <TableCell align="center">{row.nombre}</TableCell>
+                      <TableCell align="center">
+                        {row.notas[0].estado === "Aprobado" ? (
+                          <>
+                            Nota:{row.notas[0].puntos}
+                            <Box
+                              sx={{
+                                bgcolor: "success.main",
+                                color: "success.contrastText",
+                                p: 0,
+                                borderRadius: "30px",
+                              }}
+                            >
+                              Aprobado
+                            </Box>
+                          </>
+                        ) : (
+                          <>{row.notas[0].estado}</>
+                        )}
+                      </TableCell>
+                      <TableCell align="center">
+                        {row.notas[1].estado === "Aprobado" ? (
+                          <>
+                            {row.notas[1].puntos}
+                            <Box
+                              sx={{
+                                bgcolor: "success.main",
+                                color: "success.contrastText",
+                                p: 0,
+                                borderRadius: "30px",
+                              }}
+                            >
+                              Aprobado
+                            </Box>
+                          </>
+                        ) : (
+                          <>{row.notas[1].estado}</>
+                        )}
+                      </TableCell>
+
+                      <TableCell align="center">
+                        {row.notas[2].estado === "Aprobado" ? (
+                          <>
+                            {row.notas[2].puntos}
+                            <Box
+                              sx={{
+                                bgcolor: "success.main",
+                                color: "success.contrastText",
+                                p: 0,
+                                borderRadius: "30px",
+                              }}
+                            >
+                              Aprobado
+                            </Box>
+                          </>
+                        ) : (
+                          <>{row.notas[2].estado}</>
+                        )}
+                      </TableCell>
+
                       <TableCell align="center">{row.colegio.nombre}</TableCell>
-                      <TableCell align="center">
-                        {row.colegio.distrito.nombre}
-                      </TableCell>
-                      <TableCell align="center">
-                        {row.colegio.distrito.departamento}
-                      </TableCell>
+
                       <TableCell align="center">{row.nivel.nombre}</TableCell>
                       <TableCell align="center">
-                        <IconButton
-                          color="primary"
-                          aria-label="upload picture"
-                          component="span"
+                        <Button
+                          variant="contained"
+                          startIcon={<FormatListNumberedIcon />}
                           onClick={() => {
                             seleccionarConsola(row);
                           }}
                         >
-                          <FormatListNumberedIcon />
-                        </IconButton>
-
-                        <IconButton
-                          color="primary"
-                          aria-label="upload picture"
-                          component="span"
-                        >
-                          <InsightsIcon />
-                        </IconButton>
+                          Estudiantes
+                        </Button>
                       </TableCell>
                     </TableRow>
                   ))}
@@ -234,10 +283,10 @@ export default function Reportes() {
               <TableHead>
                 <TableRow>
                   <StyledTableCell align="center">RUDE</StyledTableCell>
-                  <StyledTableCell align="center">CI</StyledTableCell>
                   <StyledTableCell align="center">NOMBRE</StyledTableCell>
                   <StyledTableCell align="center">APPATERNO</StyledTableCell>
                   <StyledTableCell align="center">APMATERNO</StyledTableCell>
+                  <StyledTableCell align="center">CORREO</StyledTableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -249,10 +298,10 @@ export default function Reportes() {
                     }}
                   >
                     <TableCell align="center">{row.rude}</TableCell>
-                    <TableCell align="center">{row.ci}</TableCell>
                     <TableCell align="center">{row.nombre}</TableCell>
                     <TableCell align="center">{row.apPaterno}</TableCell>
                     <TableCell align="center">{row.apMaterno}</TableCell>
+                    <TableCell align="center">{row.correo}</TableCell>
                   </TableRow>
                 ))}
               </TableBody>
