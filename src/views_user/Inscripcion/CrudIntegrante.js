@@ -318,7 +318,7 @@ export default function Paso3() {
         JSON.stringify({})
       )
       .then((response) => {
-        enqueueSnackbar("Estudiante eliminado del grupo con exito!", {
+        enqueueSnackbar("Estudiante agregado del grupo con exito!", {
           variant: "success",
         });
         getAllEstudiantedDeEquipo(consoleSeleccionada.idEquipo);

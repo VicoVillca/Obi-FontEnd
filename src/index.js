@@ -18,6 +18,7 @@ import IniAdmin from "layouts/IniAdmin.js";
 import Coordinador from "layouts/Coordinador.js";
 import Recuperar from "layouts/Recuperar.js";
 import ConfirmarCorreoEstudiante from "layouts/ConfirmarCorreoEstudiante";
+import ConfirmarCorreoTutor from "layouts/ConfirmarCorreoTutor";
 import Cookies from "universal-cookie";
 import { SnackbarProvider } from "notistack";
 const cookies = new Cookies();
@@ -42,6 +43,11 @@ ReactDOM.render(
                 exact
                 path="/confirmarCorreo/:token"
                 component={ConfirmarCorreoEstudiante}
+              />
+              <Route
+                exact
+                path="/confirmarCorreoTutor/:token"
+                component={ConfirmarCorreoTutor}
               />
               {cookies.get("rol") !== undefined ? (
                 <>
