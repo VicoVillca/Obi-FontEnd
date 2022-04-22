@@ -9,17 +9,13 @@ import Link from "@mui/material/Link";
 import { withRouter } from "react-router-dom";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
+import Alert from "@mui/material/Alert";
 
 import { experimentalStyled as styled } from "@mui/material/styles";
 import avatar1 from "assets/img/imgloginedit.png";
 //notifications
 import { useSnackbar } from "notistack";
 
-/// elements for select
-import InputLabel from "@mui/material/InputLabel";
-import MenuItem from "@mui/material/MenuItem";
-import FormControl from "@mui/material/FormControl";
-import Select from "@mui/material/Select";
 ///ELEMENTS FOR DIALOG
 
 import PropTypes from "prop-types";
@@ -40,7 +36,8 @@ import SaveIcon from "@mui/icons-material/Save";
 import axios from "axios";
 import HOST from "../variables/general.js";
 import { useParams } from "react-router-dom";
-const baseUrl = HOST.URL_BACK_END + "estudiante";
+const baseUrl = HOST.URL_BACK_END + "user";
+const baseUrlAuth = HOST.URL_BACK_END + "auth";
 
 const styles = {
   cardCategoryWhite: {
@@ -123,22 +120,15 @@ export default withRouter(function SignIn(props) {
   let { token } = useParams();
   const classes = useStyles();
   const { enqueueSnackbar } = useSnackbar();
-  const [consoleSeleccionada, setConsolaSeleccionada] = useState({
-    apMaterno: "",
-    apPaterno: "",
-    celular: "",
-    ci: "",
-    correo: "",
-    correoVerificado: false,
-    fechaNac: "",
-    genero: "",
-    nombre: "",
-    rude: "",
+  const [usuario, setUsuario] = useState({
+    idUser: "",
+    pasword1: "",
+    pasword2: "",
   });
 
   const handleChangle = (e) => {
     const { name, value } = e.target;
-    setConsolaSeleccionada((prevState) => ({
+    setUsuario((prevState) => ({
       ...prevState,
       [name]: value,
     }));
@@ -149,18 +139,10 @@ export default withRouter(function SignIn(props) {
     //showNotificationSuccess('success','Se modifico los datos con exito');
 
     await axios
-      .patch(
-        baseUrl + "/" + consoleSeleccionada.rude,
+      .post(
+        baseUrlAuth + "/new-password",
         JSON.stringify({
-          nombre: consoleSeleccionada.nombre,
-          apPaterno: consoleSeleccionada.apPaterno,
-          apMaterno: consoleSeleccionada.apMaterno,
-          celular: consoleSeleccionada.celular,
-          fechaNac: consoleSeleccionada.fechaNac,
-          genero: consoleSeleccionada.genero,
-          ci: consoleSeleccionada.ci,
-          correo: consoleSeleccionada.correo,
-          correoVerificado: true,
+          newPassword: usuario.pasword1,
         }),
         {
           headers: {
@@ -172,7 +154,7 @@ export default withRouter(function SignIn(props) {
       .then((response) => {
         //showNotificationSuccess('success','Grupo guardado con exito');
         enqueueSnackbar(
-          "Correo y datos personales de estudiante confirmados con exito!",
+          "Se modifico con exito contraseña la contraseña de su cuenta de tutor!",
           {
             variant: "success",
           }
@@ -182,7 +164,7 @@ export default withRouter(function SignIn(props) {
       .catch((error) => {
         //alert(error+"");
 
-        enqueueSnackbar("Error al confirmar correo y datos personales", {
+        enqueueSnackbar("Error al guardar la contraseña", {
           variant: "error",
         });
         history.push("/");
@@ -202,14 +184,17 @@ export default withRouter(function SignIn(props) {
         //showNotificationSuccess('success','Grupo guardado con exito');
         console.log("respuesta weeee");
         console.log(response);
-        setConsolaSeleccionada(response?.data);
+        setUsuario({
+          idUser: response?.data.idUser,
+          pasword1: "",
+          pasword2: "",
+        });
       })
       .catch((error) => {
         //alert(error+"");
-
         history.push("/");
       });
-  }, [setConsolaSeleccionada, token, history]);
+  }, [setUsuario, token, history]);
 
   useEffect(() => {
     /// state
@@ -224,7 +209,7 @@ export default withRouter(function SignIn(props) {
       <BootstrapDialog
         aria-labelledby="customized-dialog-title"
         open={true}
-        maxWidth={"sm"}
+        maxWidth={"xs"}
       >
         <DialogContent>
           <Box
@@ -242,157 +227,56 @@ export default withRouter(function SignIn(props) {
                 </a>
               </CardAvatar>
               <CardBody profile>
-                <h3 className={classes.cardTitle}>Datos de estudiante</h3>
+                <h3 className={classes.cardTitle}>Bienvenido al TEAM</h3>
                 <form onSubmit={Update}>
                   <GridContainer>
                     <GridItem xs={12} sm={12} md={12}>
-                      Verifique si sus datos son correctos.
+                      Agrega una contraseña segura a tu cuenta,Una constraseña
+                      segura contribuye a evitar el acceso no autorizado a la
+                      cuenta de Tutor.
                     </GridItem>
-                    <GridItem xs={6} sm={6} md={6}>
+                    <GridItem xs={12} sm={12} md={12}>
                       <TextField
                         variant="outlined"
                         margin="normal"
                         required
                         fullWidth
-                        id="rude"
-                        label="RUDE: Registro unico de estudiante"
-                        name="rude"
-                        type="number"
-                        disabled
+                        size="small"
+                        id="pasword1"
+                        label="Contraseña"
+                        name="pasword1"
+                        type="password"
+                        value={usuario.pasword1}
                         autoComplete="off"
-                        value={consoleSeleccionada.rude}
+                        inputProps={{ minLength: 8 }}
                         onChange={handleChangle}
+                        helperText="8 caracteres como minimo. distingue mayusculas de minusculas"
                       />
                     </GridItem>
-                    <GridItem xs={6} sm={6} md={6}>
+                    <GridItem xs={12} sm={12} md={12}>
                       <TextField
                         variant="outlined"
                         margin="normal"
+                        size="small"
                         required
                         fullWidth
-                        id="ci"
-                        label="CI: Cedula de Identidad"
-                        name="ci"
-                        type="text"
+                        id="pasword2"
+                        label="Repita la contraseña"
+                        name="pasword2"
+                        type="password"
+                        value={usuario.pasword2}
                         autoComplete="off"
-                        value={consoleSeleccionada.ci}
                         onChange={handleChangle}
                       />
-                    </GridItem>
-                    <GridItem xs={4} sm={4} md={4}>
-                      <TextField
-                        variant="outlined"
-                        margin="normal"
-                        required
-                        fullWidth
-                        id="nombre"
-                        label="Nombre"
-                        name="nombre"
-                        type="text"
-                        autoComplete="off"
-                        value={consoleSeleccionada.nombre}
-                        onChange={handleChangle}
-                      />
-                    </GridItem>
-                    <GridItem xs={4} sm={4} md={4}>
-                      <TextField
-                        variant="outlined"
-                        margin="normal"
-                        required
-                        fullWidth
-                        id="apPaterno"
-                        label="Apellido Paterno"
-                        name="apPaterno"
-                        type="text"
-                        autoComplete="off"
-                        value={consoleSeleccionada.apPaterno}
-                        onChange={handleChangle}
-                      />
-                    </GridItem>
-                    <GridItem xs={4} sm={4} md={4}>
-                      <TextField
-                        variant="outlined"
-                        margin="normal"
-                        required
-                        fullWidth
-                        id="apMaterno"
-                        label="Apellido Materno"
-                        name="apMaterno"
-                        type="text"
-                        autoComplete="off"
-                        value={consoleSeleccionada.apMaterno}
-                        onChange={handleChangle}
-                      />
-                    </GridItem>
-
-                    <GridItem xs={6} sm={6} md={6}>
-                      <TextField
-                        variant="outlined"
-                        margin="normal"
-                        required
-                        fullWidth
-                        id="correo"
-                        label="Correo"
-                        name="correo"
-                        type="email"
-                        disabled
-                        autoComplete="off"
-                        value={consoleSeleccionada.correo}
-                        onChange={handleChangle}
-                      />
-                    </GridItem>
-                    <GridItem xs={6} sm={6} md={6}>
-                      <TextField
-                        variant="outlined"
-                        margin="normal"
-                        required
-                        fullWidth
-                        id="celular"
-                        label="Celular"
-                        name="celular"
-                        type="number"
-                        autoComplete="off"
-                        value={consoleSeleccionada.celular}
-                        onChange={handleChangle}
-                      />
-                    </GridItem>
-                    <GridItem xs={6} sm={6} md={6}>
-                      <TextField
-                        variant="outlined"
-                        margin="normal"
-                        required
-                        fullWidth
-                        id="fechaNac"
-                        label="Fecha de Nacimiento"
-                        name="fechaNac"
-                        type="date"
-                        value={consoleSeleccionada.fechaNac}
-                        InputLabelProps={{
-                          shrink: true,
-                        }}
-                        onChange={handleChangle}
-                      />
-                    </GridItem>
-                    <GridItem xs={6} sm={6} md={6}>
-                      <Box sx={{ minWidth: 120, marginTop: 2 }}>
-                        <FormControl fullWidth>
-                          <InputLabel id="demo-simple-select-label">
-                            Genero
-                          </InputLabel>
-                          <Select
-                            required
-                            labelId="demo-simple-select-label"
-                            id="demo-simple-select"
-                            label="Genero"
-                            name="genero"
-                            onChange={handleChangle}
-                            value={consoleSeleccionada.genero}
-                          >
-                            <MenuItem value={"Masculino"}>Masculino</MenuItem>
-                            <MenuItem value={"Femenino"}>Femenino</MenuItem>
-                          </Select>
-                        </FormControl>
-                      </Box>
+                      {usuario.pasword1.length >= 8 &&
+                      usuario.pasword2.length >= 2 &&
+                      usuario.pasword1 !== usuario.pasword2 ? (
+                        <Alert severity="error">
+                          Las Contraseñas no son iguales
+                        </Alert>
+                      ) : (
+                        ""
+                      )}
                     </GridItem>
                   </GridContainer>
 
@@ -402,6 +286,13 @@ export default withRouter(function SignIn(props) {
                       color="primary"
                       type="submit"
                       startIcon={<SaveIcon />}
+                      disabled={
+                        usuario.pasword1.length >= 8 &&
+                        usuario.pasword2.length >= 2 &&
+                        usuario.pasword1 === usuario.pasword2
+                          ? false
+                          : true
+                      }
                     >
                       Aceptar y continuar
                     </Button>

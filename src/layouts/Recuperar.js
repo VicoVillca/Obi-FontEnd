@@ -179,7 +179,7 @@ export default withRouter(function SignIn(props) {
       <BootstrapDialog
         aria-labelledby="customized-dialog-title"
         open={true}
-        maxWidth={"sm"}
+        maxWidth={"xs"}
       >
         <DialogContent>
           <Box

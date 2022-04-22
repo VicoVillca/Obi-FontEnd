@@ -284,7 +284,7 @@ export default function SignInSide() {
         onClose={handleModalUpdate}
         aria-labelledby="customized-dialog-title"
         open={openModalUpdate}
-        maxWidth={"sm"}
+        maxWidth={"lg"}
       >
         <BootstrapDialogTitle
           id="customized-dialog-title"
@@ -303,7 +303,7 @@ export default function SignInSide() {
         onClose={handleModalPasword}
         aria-labelledby="customized-dialog-title"
         open={openModalPasword}
-        maxWidth={"sm"}
+        maxWidth={"xs"}
       >
         <BootstrapDialogTitle
           id="customized-dialog-title"

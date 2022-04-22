@@ -11,6 +11,7 @@ import Hidden from "@mui/material/Hidden";
 import { withRouter } from "react-router-dom";
 import AlternateEmailIcon from "@mui/icons-material/AlternateEmail";
 import AccountCircle from "@mui/icons-material/AccountCircle";
+import LockIcon from "@mui/icons-material/Lock";
 
 import { experimentalStyled as styled } from "@mui/material/styles";
 import avatar1 from "assets/img/OBI_small.jpg";
@@ -35,6 +36,7 @@ import GridContainer from "components/Grid/GridContainer.js";
 import { InputAdornment } from "@mui/material";
 
 import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
+import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import SendIcon from "@mui/icons-material/Send";
 
 //utiles para el webservise
@@ -122,7 +124,7 @@ export default withRouter(function SignIn(props) {
   const [captchaValido, setCaptchaValido] = useState(false);
   const { enqueueSnackbar } = useSnackbar();
   const [openModalContraseña, setOpenContraseña] = useState(false);
-  const [openModalUsuarioNuevo, setOpenUsuarioNuevo] = useState(true);
+  const [openModalUsuarioNuevo, setOpenUsuarioNuevo] = useState(false);
   const [passwordIsMasked, setpasswordIsMasked] = useState(true);
 
   const togglePasswordMask = () => {
@@ -136,7 +138,6 @@ export default withRouter(function SignIn(props) {
   };
   const onChange = (value) => {
     if (captcha.current.getValue()) {
-      console.log("Captcha value:", value);
       setCaptchaValido(true);
     } else {
       setCaptchaValido(false);
@@ -148,26 +149,65 @@ export default withRouter(function SignIn(props) {
     });
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    try {
+    /*try {
       const response = await axios.post(
         baseUrl,
         JSON.stringify({
           username: data.get("username"),
-          password: data.get("password"), //"juassdn"
+          password: data.get("password"),
         }),
         header
       );
-
+      console.log(response);
       cookies.set("token", response?.data?.token, { path: "/" });
       cookies.set("rol", response?.data?.rol, { path: "/" });
       cookies.set("username", data.get("username"));
-      //history.push("./ini");
+      
       history.go(0);
     } catch (err) {
+      console.log(err);
       enqueueSnackbar("Nombre de usuario o contraseña incorrectos!", {
         variant: "error",
       });
-    }
+    }*/
+    ///otra forma de login weeee
+
+    await axios
+      .post(
+        baseUrl,
+        JSON.stringify({
+          username: data.get("username"),
+          password: data.get("password"),
+        }),
+        header
+      )
+      .then((response) => {
+        //showNotificationSuccess('success','Grupo guardado con exito');
+
+        cookies.set("token", response?.data?.token, { path: "/" });
+        cookies.set("rol", response?.data?.rol, { path: "/" });
+        cookies.set("username", data.get("username"));
+
+        history.go(0);
+      })
+      .catch((error) => {
+        //alert(error+"");
+        if (
+          error.response?.data.message ===
+          "Pongase en contacto con el administrador"
+        ) {
+          enqueueSnackbar("Acceso desabilitado!", {
+            variant: "error",
+          });
+          enqueueSnackbar(error.response?.data.message + "!", {
+            variant: "info",
+          });
+        } else {
+          enqueueSnackbar(error.response?.data.message + "!", {
+            variant: "error",
+          });
+        }
+      });
   };
   //---    New Contraseña --//
 
@@ -178,7 +218,6 @@ export default withRouter(function SignIn(props) {
     event.preventDefault();
     handleModalContraseña();
     const data = new FormData(event.currentTarget);
-    console.log(data.get("correo"));
 
     await axios
       .post(
@@ -189,7 +228,6 @@ export default withRouter(function SignIn(props) {
         header
       )
       .then((response) => {
-        console.log(response);
         //showNotificationSuccess('success','Grupo guardado con exito');
         enqueueSnackbar(
           "Se envio la solicitud para cambiar la contraseña a su correo!",
@@ -200,7 +238,6 @@ export default withRouter(function SignIn(props) {
       })
       .catch((error) => {
         //alert(error+"");
-        console.log(error);
         enqueueSnackbar(
           "No se pudo enviar la solicitud de nueva contraseña al correo!",
           { variant: "error" }
@@ -216,7 +253,6 @@ export default withRouter(function SignIn(props) {
     event.preventDefault();
     handleModalUsuarioNuevo();
     const data = new FormData(event.currentTarget);
-    console.log(data.get("correo"));
 
     await axios
       .post(
@@ -228,7 +264,6 @@ export default withRouter(function SignIn(props) {
         header
       )
       .then((response) => {
-        console.log(response);
         enqueueSnackbar(
           "Se envio la solicitud para cambiar la contraseña a su correo!",
           {
@@ -238,8 +273,7 @@ export default withRouter(function SignIn(props) {
       })
       .catch((error) => {
         //alert(error+"");
-        console.log(error);
-        enqueueSnackbar("NOmbre de usuario o correo ya esta en uso!", {
+        enqueueSnackbar("Nombre de usuario o correo ya esta en uso!", {
           variant: "error",
         });
       });
@@ -293,7 +327,11 @@ export default withRouter(function SignIn(props) {
                     InputProps={{
                       endAdornment: (
                         <InputAdornment position="end">
-                          <RemoveRedEyeIcon onClick={togglePasswordMask} />
+                          {!passwordIsMasked ? (
+                            <RemoveRedEyeIcon onClick={togglePasswordMask} />
+                          ) : (
+                            <VisibilityOffIcon onClick={togglePasswordMask} />
+                          )}
                         </InputAdornment>
                       ),
                     }}
@@ -372,6 +410,13 @@ export default withRouter(function SignIn(props) {
                     label="username"
                     name="username"
                     autoComplete="username"
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <AccountCircle />
+                        </InputAdornment>
+                      ),
+                    }}
                   />
 
                   <TextField
@@ -384,9 +429,18 @@ export default withRouter(function SignIn(props) {
                     label="password"
                     id="pasword"
                     InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <LockIcon />
+                        </InputAdornment>
+                      ),
                       endAdornment: (
                         <InputAdornment position="end">
-                          <RemoveRedEyeIcon onClick={togglePasswordMask} />
+                          {!passwordIsMasked ? (
+                            <RemoveRedEyeIcon onClick={togglePasswordMask} />
+                          ) : (
+                            <VisibilityOffIcon onClick={togglePasswordMask} />
+                          )}
                         </InputAdornment>
                       ),
                     }}
@@ -463,18 +517,26 @@ export default withRouter(function SignIn(props) {
                   name="correo"
                   type="email"
                   autoComplete="off"
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <AlternateEmailIcon />
+                      </InputAdornment>
+                    ),
+                  }}
                 />
               </GridItem>
             </GridContainer>
           </DialogContent>
           <DialogActions>
             <Button
-              variant="text"
-              color="inherit"
+              variant="outlined"
+              color="primary"
               onClick={handleModalContraseña}
             >
               Cancelar
             </Button>
+
             <Button
               variant="contained"
               color="success"
@@ -572,8 +634,8 @@ export default withRouter(function SignIn(props) {
           </DialogContent>
           <DialogActions>
             <Button
-              variant="text"
-              color="inherit"
+              variant="outlined"
+              color="primary"
               onClick={handleModalUsuarioNuevo}
             >
               Cancelar

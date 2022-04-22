@@ -373,7 +373,7 @@ export default function Olimpiada() {
                 <TableCell align="left">
                   {row.correo}
                   {!row.correoVerificado ? (
-                    "no"
+                    ""
                   ) : (
                     <VerifiedIcon color="success" />
                   )}

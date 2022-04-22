@@ -10,6 +10,7 @@ import TextField from "@mui/material/TextField";
 import Paper from "@mui/material/Paper";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
+import VerifiedIcon from "@mui/icons-material/Verified";
 /// elements for select
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
@@ -296,7 +297,7 @@ export default function Olimpiada() {
     await axios
       .get(baseUrl, JSON.stringify({}), header)
       .then((response) => {
-        console.log(response);
+        console.log(response?.data);
         setResultado(response?.data);
         setResultado2(response?.data);
       })
@@ -425,7 +426,14 @@ export default function Olimpiada() {
                 </TableCell>
                 <TableCell align="left">{row.username}</TableCell>
 
-                <TableCell align="left">{row.correo}</TableCell>
+                <TableCell align="left">
+                  {row.correo}{" "}
+                  {!row.correoVerificado ? (
+                    "no"
+                  ) : (
+                    <VerifiedIcon color="success" />
+                  )}
+                </TableCell>
                 <TableCell align="center">
                   {row.acceso ? (
                     <DesktopWindowsIcon color="primary" />
